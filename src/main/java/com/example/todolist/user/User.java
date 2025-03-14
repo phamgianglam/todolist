@@ -20,6 +20,6 @@ public class User implements Serializable {
 
     private String email;
 
-    @OneToMany(cascade = {}, mappedBy = "owner")
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
     private List<Task> tasks;
 }
