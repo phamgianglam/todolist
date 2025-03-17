@@ -1,7 +1,7 @@
 package com.example.todolist.task;
 
 import com.example.todolist.helper.Status;
-import com.example.todolist.user.User;
+import com.example.todolist.profile.Profile;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -26,5 +26,5 @@ public class Task implements Serializable {
     private ZonedDateTime dueDate;
 
     @ManyToOne
-    private User owner;
+    private Profile owner;
 }
