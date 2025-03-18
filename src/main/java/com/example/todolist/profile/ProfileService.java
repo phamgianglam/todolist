@@ -23,4 +23,9 @@ public class ProfileService {
     public List<Profile> findAll() {
         return this.profileRepository.findAll();
     }
+
+    public Profile createProfile(Profile profile) {
+        return this.profileRepository.save(profile);
+    }
 }
+

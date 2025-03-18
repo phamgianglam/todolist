@@ -13,6 +13,7 @@ import java.util.List;
 public class Profile implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String username;
@@ -24,8 +25,16 @@ public class Profile implements Serializable {
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "owner")
     private List<Task> tasks = new ArrayList<>();
 
+
     public void addTasks(Task task) {
         task.setOwner(this);
         this.tasks.add(task);
+    }
+
+    public Profile(String username, String password, String email, List<Task> tasks) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.tasks = tasks;
     }
 }

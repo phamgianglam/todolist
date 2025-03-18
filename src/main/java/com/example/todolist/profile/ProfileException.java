@@ -6,4 +6,10 @@ public class ProfileException {
             super("Could not find user with Id " + String.valueOf(id));
         }
     }
+
+    public static class BadRequestException extends RuntimeException{
+        public BadRequestException() {
+            super("Bad request");
+        }
+    }
 }

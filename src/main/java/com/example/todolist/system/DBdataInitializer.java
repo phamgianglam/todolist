@@ -24,20 +24,6 @@ public class DBdataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Profile profile = new Profile();
-        profile.setId(1L);
-        profile.setUsername("JohnDoe");
-        profile.setEmail("JohnDoe@steve.com");
-        profile.setPassword("randompassword");
 
-        Task task1 = new Task();
-        task1.setId(1L);
-        task1.setTitle("Clean");
-        task1.setDescription("Clean the house");
-        task1.setStatus(Status.DONE);
-        task1.setDueDate(ZonedDateTime.now());
-        task1.setOwner(profile);
-        profile.addTasks(task1);
-        profileRepository.save(profile);
     }
 }
