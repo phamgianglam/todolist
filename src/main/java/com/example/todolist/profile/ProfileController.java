@@ -3,9 +3,11 @@ package com.example.todolist.profile;
 import com.example.todolist.profile.converter.ProfileRequestDTOToProfileConverter;
 import com.example.todolist.profile.converter.ProfileToProfileDTOConverter;
 import com.example.todolist.profile.dto.ProfileDTO;
+import com.example.todolist.profile.dto.ProfilePartialRequestDTO;
 import com.example.todolist.profile.dto.ProfileRequestDTO;
 import com.example.todolist.system.Result;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,4 +51,19 @@ public class ProfileController {
         ProfileDTO profileDTO = this.profileToProfileDTOConverter.convert(profile);
         return new Result(profileDTO, 201,"object created");
     }
+
+    @PatchMapping("/api/v1/profiles/{profileId}")
+    public Result patchProfile(@Valid @RequestBody ProfilePartialRequestDTO profilePartialRequestDTO, @PathVariable long profileId) {
+        Profile profile = this.profileService.partialUpdateProfile(profilePartialRequestDTO, profileId);
+        ProfileDTO profileDTO = this.profileToProfileDTOConverter.convert(profile);
+        return new Result(profileDTO, 200, "object updated");
+    }
+
+    @DeleteMapping("/api/v1/profiles/{profileId}")
+    public ResponseEntity deleteProfile(@PathVariable long profileId){
+        this.profileService.deleteProfileById(profileId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

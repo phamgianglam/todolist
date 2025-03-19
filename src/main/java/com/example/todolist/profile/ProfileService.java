@@ -1,5 +1,6 @@
 package com.example.todolist.profile;
 
+import com.example.todolist.profile.dto.ProfilePartialRequestDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,20 @@ public class ProfileService {
 
     public Profile createProfile(Profile profile) {
         return this.profileRepository.save(profile);
+    }
+
+    public Profile partialUpdateProfile(ProfilePartialRequestDTO data, long profileId){
+        Profile profile = this.findById(profileId);
+
+        if (data.email() != null) profile.setEmail(data.email());
+        if (data.username() != null) profile.setUsername(data.email());
+
+        profile = this.profileRepository.save(profile);
+        return profile;
+    }
+
+    public void deleteProfileById(long profileId){
+        this.profileRepository.deleteById(profileId);
     }
 }
 
