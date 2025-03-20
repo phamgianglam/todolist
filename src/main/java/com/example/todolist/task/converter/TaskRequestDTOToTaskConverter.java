@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import static com.example.todolist.helper.Helper.convertISoStringToZoneDateTime;
 
 @Component
-public class TaskRequestDTOToTaskConverter implements Converter <TaskRequestDTO, Task> {
+public class TaskRequestDTOToTaskConverter implements Converter<TaskRequestDTO, Task> {
 
     private ProfileRepository profileRepository;
 
@@ -21,17 +21,20 @@ public class TaskRequestDTOToTaskConverter implements Converter <TaskRequestDTO,
     }
 
     @Override
-    public Task convert(TaskRequestDTO taskRequestDTO){
+    public Task convert(TaskRequestDTO taskRequestDTO) {
         Task task = new Task();
-        Profile profile = this.profileRepository
-                .findById(taskRequestDTO.ownerId())
-                .orElseThrow(() -> new ProfileException.UserNotFoundException(taskRequestDTO.ownerId()));
+        Profile profile = null;
+        if (taskRequestDTO.ownerId() != null) {
+            profile = this.profileRepository.findById(taskRequestDTO.ownerId()).orElseThrow(
+                    () -> new ProfileException.UserNotFoundException(taskRequestDTO.ownerId()));
+        }
+
         task.setTitle(taskRequestDTO.title());
         task.setDueDate(convertISoStringToZoneDateTime(taskRequestDTO.dueDate()));
         task.setStatus(taskRequestDTO.status());
         task.setDescription(taskRequestDTO.description());
         task.setOwner(profile);
 
-        return  task;
+        return task;
     }
 }

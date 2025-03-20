@@ -20,16 +20,16 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(ProfileException.UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handlerNotFoundException(ProfileException.UserNotFoundException ex){
+    Result handlerNotFoundException(ProfileException.UserNotFoundException ex) {
         return new Result(404, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    Result handleValidationException(MethodArgumentNotValidException ex){
+    Result handleValidationException(MethodArgumentNotValidException ex) {
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();
         Map<String, String> map = new HashMap<>(errors.size());
-        errors.forEach((error)-> {
+        errors.forEach((error) -> {
             String key = ((FieldError) error).getField();
             String val = error.getDefaultMessage();
             map.put(key, val);

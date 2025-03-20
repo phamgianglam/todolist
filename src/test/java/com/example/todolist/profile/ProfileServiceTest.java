@@ -1,8 +1,14 @@
 package com.example.todolist.profile;
 
-import com.example.todolist.helper.Status;
-import com.example.todolist.task.Task;
-import com.example.todolist.profile.ProfileException.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,13 +18,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
+import com.example.todolist.helper.Status;
+import com.example.todolist.profile.ProfileException.UserNotFoundException;
+import com.example.todolist.task.Task;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -52,24 +54,23 @@ class ProfileServiceTest {
     }
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 
     @Test
-    void testFindByIdSuccess(){
+    void testFindByIdSuccess() {
 
         given(profileRepository.findById(1L)).willReturn(Optional.of(this.profileList.getFirst()));
 
         Profile result = profileService.findById(1L);
-        assertEquals(result.getId(), this.profileList.getFirst()
-                .getId());
+        assertEquals(result.getId(), this.profileList.getFirst().getId());
     }
 
     @Test
-    public void testFindByIdNotFound(){
+    public void testFindByIdNotFound() {
         given(profileRepository.findById(Mockito.any(Long.class))).willReturn(Optional.empty());
 
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, ()-> profileService.findById(1L));
+        UserNotFoundException exception =
+                assertThrows(UserNotFoundException.class, () -> profileService.findById(1L));
         assertEquals("Could not find user with Id 1", exception.getMessage());
     }
 

@@ -6,8 +6,7 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum Status {
-    PENDING("Pending"),
-    DONE("Done");
+    PENDING("Pending"), DONE("Done");
 
     private String value;
 

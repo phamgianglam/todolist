@@ -1,10 +1,15 @@
 package com.example.todolist.profile;
 
+import static org.mockito.BDDMockito.given;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.discovery.SelectorResolver;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,11 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-
-import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,7 +32,7 @@ class ProfileControllerTest {
     @MockitoBean
     ProfileService profileService;
 
-    List <Profile> profiles;
+    List<Profile> profiles;
 
     @BeforeEach
     void setUp() {
@@ -62,13 +62,13 @@ class ProfileControllerTest {
     }
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 
     @Test
     void testFindUseById() throws Exception {
         given(this.profileService.findById(1L)).willReturn(this.profiles.getFirst());
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data.id").value(1L));
@@ -77,9 +77,11 @@ class ProfileControllerTest {
 
     @Test
     void testFindUseByIdNotFound() throws Exception {
-        given(this.profileService.findById(1L)).willThrow(new ProfileException.UserNotFoundException(1L));
+        given(this.profileService.findById(1L))
+                .willThrow(new ProfileException.UserNotFoundException(1L));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(404))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
@@ -90,9 +92,11 @@ class ProfileControllerTest {
     void testfindAll() throws Exception {
         given(this.profileService.findAll()).willReturn(this.profiles);
 
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/profiles/")
-                .accept(MediaType.APPLICATION_JSON))
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/v1/profiles/")
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data", Matchers.hasSize(this.profiles.size())));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data",
+                        Matchers.hasSize(this.profiles.size())));
     }
 }

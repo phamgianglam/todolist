@@ -22,8 +22,8 @@ public class ProfileController {
     private final ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter;
 
     public ProfileController(ProfileService profileService,
-                             ProfileToProfileDTOConverter profileToProfileDTOConverter,
-                             ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter) {
+            ProfileToProfileDTOConverter profileToProfileDTOConverter,
+            ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter) {
         this.profileService = profileService;
         this.profileToProfileDTOConverter = profileToProfileDTOConverter;
         this.profileRequestDTOToProfileConverter = profileRequestDTOToProfileConverter;
@@ -38,10 +38,11 @@ public class ProfileController {
     }
 
     @GetMapping("/api/v1/profiles/")
-    public Result findAll(){
+    public Result findAll() {
         List<Profile> profiles = this.profileService.findAll();
-        List<ProfileDTO> profilesDTO = profiles.stream().map(profileToProfileDTOConverter::convert).toList();
-        return  new Result(profilesDTO, 200, "Found profiles");
+        List<ProfileDTO> profilesDTO =
+                profiles.stream().map(profileToProfileDTOConverter::convert).toList();
+        return new Result(profilesDTO, 200, "Found profiles");
     }
 
     @PostMapping("/api/v1/profiles/")
@@ -49,18 +50,21 @@ public class ProfileController {
         Profile profile = this.profileRequestDTOToProfileConverter.convert(profileRequestDTO);
         profile = this.profileService.createProfile(profile);
         ProfileDTO profileDTO = this.profileToProfileDTOConverter.convert(profile);
-        return new Result(profileDTO, 201,"object created");
+        return new Result(profileDTO, 201, "object created");
     }
 
     @PatchMapping("/api/v1/profiles/{profileId}")
-    public Result patchProfile(@Valid @RequestBody ProfilePartialRequestDTO profilePartialRequestDTO, @PathVariable long profileId) {
-        Profile profile = this.profileService.partialUpdateProfile(profilePartialRequestDTO, profileId);
+    public Result patchProfile(
+            @Valid @RequestBody ProfilePartialRequestDTO profilePartialRequestDTO,
+            @PathVariable long profileId) {
+        Profile profile =
+                this.profileService.partialUpdateProfile(profilePartialRequestDTO, profileId);
         ProfileDTO profileDTO = this.profileToProfileDTOConverter.convert(profile);
         return new Result(profileDTO, 200, "object updated");
     }
 
     @DeleteMapping("/api/v1/profiles/{profileId}")
-    public ResponseEntity deleteProfile(@PathVariable long profileId){
+    public ResponseEntity deleteProfile(@PathVariable long profileId) {
         this.profileService.deleteProfileById(profileId);
 
         return ResponseEntity.noContent().build();
