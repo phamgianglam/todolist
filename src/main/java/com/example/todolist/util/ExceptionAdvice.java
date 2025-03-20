@@ -1,7 +1,6 @@
-package com.example.todolist.helper;
+package com.example.todolist.util;
 
 import com.example.todolist.system.Result;
-import com.example.todolist.profile.ProfileException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -18,9 +17,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class ExceptionAdvice {
 
-    @ExceptionHandler(ProfileException.UserNotFoundException.class)
+    @ExceptionHandler(Exceptions.ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handlerNotFoundException(ProfileException.UserNotFoundException ex) {
+    Result handlerNotFoundException(Exceptions.ObjectNotFoundException ex) {
         return new Result(404, ex.getMessage());
     }
 

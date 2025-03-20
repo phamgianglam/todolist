@@ -1,15 +1,14 @@
 package com.example.todolist.task.converter;
 
 import com.example.todolist.profile.Profile;
-import com.example.todolist.profile.ProfileException;
+import com.example.todolist.util.Exceptions;
 import com.example.todolist.profile.ProfileRepository;
 import com.example.todolist.task.Task;
 import com.example.todolist.task.dto.TaskRequestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import static com.example.todolist.helper.Helper.convertISoStringToZoneDateTime;
+import static com.example.todolist.util.Helper.convertISoStringToZoneDateTime;
 
 @Component
 public class TaskRequestDTOToTaskConverter implements Converter<TaskRequestDTO, Task> {
@@ -26,7 +25,8 @@ public class TaskRequestDTOToTaskConverter implements Converter<TaskRequestDTO, 
         Profile profile = null;
         if (taskRequestDTO.ownerId() != null) {
             profile = this.profileRepository.findById(taskRequestDTO.ownerId()).orElseThrow(
-                    () -> new ProfileException.UserNotFoundException(taskRequestDTO.ownerId()));
+                    () -> new Exceptions.ObjectNotFoundException(taskRequestDTO.ownerId(),
+                            "profile"));
         }
 
         task.setTitle(taskRequestDTO.title());

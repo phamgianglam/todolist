@@ -1,6 +1,6 @@
 package com.example.todolist.task;
 
-import com.example.todolist.helper.Status;
+import com.example.todolist.util.Status;
 import com.example.todolist.profile.Profile;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
