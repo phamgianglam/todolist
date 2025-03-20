@@ -2,6 +2,7 @@ package com.example.todolist.profile;
 
 import java.util.List;
 
+import com.example.todolist.util.Exceptions;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class ProfileService {
 
     public Profile findById(Long userId) {
         return this.profileRepository.findById(userId)
-                .orElseThrow(() -> new ProfileException.UserNotFoundException(userId));
+                .orElseThrow(() -> new Exceptions.ObjectNotFoundException(userId, "profile"));
     }
 
     public List<Profile> findAll() {

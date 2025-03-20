@@ -18,8 +18,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.example.todolist.helper.Status;
-import com.example.todolist.profile.ProfileException.UserNotFoundException;
+import com.example.todolist.util.Status;
+import com.example.todolist.util.Exceptions.ObjectNotFoundException;
 import com.example.todolist.task.Task;
 
 @ExtendWith(MockitoExtension.class)
@@ -69,8 +69,8 @@ class ProfileServiceTest {
     public void testFindByIdNotFound() {
         given(profileRepository.findById(Mockito.any(Long.class))).willReturn(Optional.empty());
 
-        UserNotFoundException exception =
-                assertThrows(UserNotFoundException.class, () -> profileService.findById(1L));
+        ObjectNotFoundException exception =
+                assertThrows(ObjectNotFoundException.class, () -> profileService.findById(1L));
         assertEquals("Could not find user with Id 1", exception.getMessage());
     }
 

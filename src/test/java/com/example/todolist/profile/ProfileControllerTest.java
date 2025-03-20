@@ -5,6 +5,7 @@ import static org.mockito.BDDMockito.given;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.todolist.util.Exceptions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -78,7 +79,7 @@ class ProfileControllerTest {
     @Test
     void testFindUseByIdNotFound() throws Exception {
         given(this.profileService.findById(1L))
-                .willThrow(new ProfileException.UserNotFoundException(1L));
+                .willThrow(new Exceptions.ObjectNotFoundException(1L, "profile"));
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
