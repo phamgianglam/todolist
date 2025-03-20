@@ -1,10 +1,11 @@
 package com.example.todolist.profile;
 
-import com.example.todolist.profile.dto.ProfilePartialRequestDTO;
+import java.util.List;
+
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.todolist.profile.dto.ProfilePartialRequestDTO;
 
 @Service
 @Transactional

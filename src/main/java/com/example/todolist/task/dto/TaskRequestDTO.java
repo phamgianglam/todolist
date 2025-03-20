@@ -7,5 +7,5 @@ public record TaskRequestDTO(
                              String description,
                              Status status,
                              String dueDate,
-                             long ownerId) {
+                             Long ownerId) {
 }

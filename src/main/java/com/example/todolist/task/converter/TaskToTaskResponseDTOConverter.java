@@ -1,11 +1,13 @@
 package com.example.todolist.task.converter;
 
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
+
+import static com.example.todolist.helper.Helper.convertDateTimeObjectToIsoString;
+
 import com.example.todolist.profile.converter.ProfileToProfileDTOConverter;
 import com.example.todolist.task.dto.TaskResponseDTO;
 import com.example.todolist.task.Task;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
-import static com.example.todolist.helper.Helper.convertDateTimeObjectToIsoString;
 
 @Component
 public class TaskToTaskResponseDTOConverter implements Converter<Task, TaskResponseDTO> {

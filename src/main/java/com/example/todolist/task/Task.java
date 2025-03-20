@@ -3,6 +3,7 @@ package com.example.todolist.task;
 import com.example.todolist.helper.Status;
 import com.example.todolist.profile.Profile;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.time.ZonedDateTime;
 public class Task implements Serializable {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private String title;
