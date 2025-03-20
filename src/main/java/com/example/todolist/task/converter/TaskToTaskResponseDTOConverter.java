@@ -12,19 +12,19 @@ public class TaskToTaskResponseDTOConverter implements Converter<Task, TaskRespo
 
     private final ProfileToProfileDTOConverter profileToProfileDTOConverter;
 
-    public TaskToTaskResponseDTOConverter(ProfileToProfileDTOConverter profileToProfileDTOConverter) {
+    public TaskToTaskResponseDTOConverter(
+            ProfileToProfileDTOConverter profileToProfileDTOConverter) {
         this.profileToProfileDTOConverter = profileToProfileDTOConverter;
     }
 
     @Override
     public TaskResponseDTO convert(Task source) {
-        TaskResponseDTO taskResponseDTO = new TaskResponseDTO(source.getId(),
-                                      source.getTitle(),
-                                      source.getDescription(),
-                                      convertDateTimeObjectToIsoString(source.getDueDate()),
-                                      source.getStatus(),
-                                      source.getOwner() != null ?
-                                              this.profileToProfileDTOConverter.convert(source.getOwner()):null);
+        TaskResponseDTO taskResponseDTO =
+                new TaskResponseDTO(source.getId(), source.getTitle(), source.getDescription(),
+                        convertDateTimeObjectToIsoString(source.getDueDate()), source.getStatus(),
+                        source.getOwner() != null
+                                ? this.profileToProfileDTOConverter.convert(source.getOwner())
+                                : null);
 
         return taskResponseDTO;
     }

@@ -52,24 +52,23 @@ class ProfileServiceTest {
     }
 
     @AfterEach
-    void tearDown() {
-    }
+    void tearDown() {}
 
     @Test
-    void testFindByIdSuccess(){
+    void testFindByIdSuccess() {
 
         given(profileRepository.findById(1L)).willReturn(Optional.of(this.profileList.getFirst()));
 
         Profile result = profileService.findById(1L);
-        assertEquals(result.getId(), this.profileList.getFirst()
-                .getId());
+        assertEquals(result.getId(), this.profileList.getFirst().getId());
     }
 
     @Test
-    public void testFindByIdNotFound(){
+    public void testFindByIdNotFound() {
         given(profileRepository.findById(Mockito.any(Long.class))).willReturn(Optional.empty());
 
-        UserNotFoundException exception = assertThrows(UserNotFoundException.class, ()-> profileService.findById(1L));
+        UserNotFoundException exception =
+                assertThrows(UserNotFoundException.class, () -> profileService.findById(1L));
         assertEquals("Could not find user with Id 1", exception.getMessage());
     }
 

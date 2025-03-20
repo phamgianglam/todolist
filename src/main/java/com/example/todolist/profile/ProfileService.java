@@ -16,7 +16,7 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public Profile findById(Long userId){
+    public Profile findById(Long userId) {
         return this.profileRepository.findById(userId)
                 .orElseThrow(() -> new ProfileException.UserNotFoundException(userId));
     }
@@ -29,17 +29,19 @@ public class ProfileService {
         return this.profileRepository.save(profile);
     }
 
-    public Profile partialUpdateProfile(ProfilePartialRequestDTO data, long profileId){
+    public Profile partialUpdateProfile(ProfilePartialRequestDTO data, long profileId) {
         Profile profile = this.findById(profileId);
 
-        if (data.email() != null) profile.setEmail(data.email());
-        if (data.username() != null) profile.setUsername(data.email());
+        if (data.email() != null)
+            profile.setEmail(data.email());
+        if (data.username() != null)
+            profile.setUsername(data.email());
 
         profile = this.profileRepository.save(profile);
         return profile;
     }
 
-    public void deleteProfileById(long profileId){
+    public void deleteProfileById(long profileId) {
         this.profileRepository.deleteById(profileId);
     }
 }
