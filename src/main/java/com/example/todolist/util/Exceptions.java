@@ -2,8 +2,14 @@ package com.example.todolist.util;
 
 public class Exceptions {
     public static class ObjectNotFoundException extends RuntimeException {
+        // Constructor with id
         public ObjectNotFoundException(Long id, String objectType) {
-            super("Could not find" + objectType + "with Id " + String.valueOf(id));
+            super("Could not find " + objectType + " with Id " + id);
+        }
+
+        // Constructor without id
+        public ObjectNotFoundException(String objectType) {
+            super("Could not find " + objectType);
         }
     }
 

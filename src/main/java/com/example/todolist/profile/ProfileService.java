@@ -20,7 +20,7 @@ public class ProfileService {
 
     public Profile findById(Long userId) {
         return this.profileRepository.findById(userId)
-                .orElseThrow(() -> new Exceptions.ObjectNotFoundException(userId, "profile"));
+                .orElseThrow(() -> new Exceptions.ObjectNotFoundException("profile"));
     }
 
     public List<Profile> findAll() {
@@ -45,6 +45,10 @@ public class ProfileService {
 
     public void deleteProfileById(long profileId) {
         this.profileRepository.deleteById(profileId);
+    }
+
+    public List<Profile> getByUsername(String username) {
+        return this.profileRepository.findByUsername(username);
     }
 }
 
