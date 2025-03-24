@@ -2,6 +2,7 @@ package com.example.todolist.task;
 
 import java.util.List;
 import com.example.todolist.util.Exceptions;
+import com.example.todolist.util.Helper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +20,36 @@ public class TaskService {
     }
 
     public void deleteTask(Long taskId) {
-        this.taskRepository.deleteById(taskId);
+        Task task = this.findbyId(taskId);
+        this.taskRepository.delete(task);
     }
 
     public Task findbyId(Long taskId) {
-        return this.taskRepository.findById(taskId)
+        Task task = this.taskRepository.findById(taskId)
                 .orElseThrow(() -> new Exceptions.ObjectNotFoundException("task"));
+        if (Helper.isAdmin()) {
+            return task;
+        } else {
+            String username = Helper.getCurrentUsername();
+            if (username.equals(task.getOwner().getUsername())) return task;
+            throw new Exceptions.ObjectNotFoundException("task");
+        }
+
     }
 
     public List<Task> findAll() {
-        return this.taskRepository.findAll();
+        if (Helper.isAdmin())
+        {
+            return this.taskRepository.findAll();
+        } else {
+            String username = Helper.getCurrentUsername();
+            return this.findAllByOwner(username);
+        }
+
+    }
+
+    public List<Task> findAllByOwner(String username){
+        return this.taskRepository.findByOwnerUsername(username);
     }
 
     public Task patchTask(Task data, Long taskId) {
