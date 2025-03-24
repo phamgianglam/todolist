@@ -1,4 +1,4 @@
 package com.example.todolist.auth.dto;
 
-public class AuthDTO {
+public record AuthDTO(String username, String password) {
 }

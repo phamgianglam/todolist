@@ -24,9 +24,8 @@ public class TaskRequestDTOToTaskConverter implements Converter<TaskRequestDTO, 
         Task task = new Task();
         Profile profile = null;
         if (taskRequestDTO.ownerId() != null) {
-            profile = this.profileRepository.findById(taskRequestDTO.ownerId()).orElseThrow(
-                    () -> new Exceptions.ObjectNotFoundException(
-                            "profile"));
+            profile = this.profileRepository.findById(taskRequestDTO.ownerId())
+                    .orElseThrow(() -> new Exceptions.ObjectNotFoundException("profile"));
         }
 
         task.setTitle(taskRequestDTO.title());
