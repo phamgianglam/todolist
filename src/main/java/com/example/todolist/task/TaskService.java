@@ -1,7 +1,6 @@
 package com.example.todolist.task;
 
 import java.util.List;
-import com.example.todolist.profile.ProfileRepository;
 import com.example.todolist.util.Exceptions;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -25,7 +24,7 @@ public class TaskService {
 
     public Task findbyId(Long taskId) {
         return this.taskRepository.findById(taskId)
-                .orElseThrow(() -> new Exceptions.ObjectNotFoundException(taskId, "task"));
+                .orElseThrow(() -> new Exceptions.ObjectNotFoundException("task"));
     }
 
     public List<Task> findAll() {

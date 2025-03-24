@@ -79,7 +79,7 @@ class ProfileControllerTest {
     @Test
     void testFindUseByIdNotFound() throws Exception {
         given(this.profileService.findById(1L))
-                .willThrow(new Exceptions.ObjectNotFoundException(1L, "profile"));
+                .willThrow(new Exceptions.ObjectNotFoundException("profile"));
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/api/v1/profiles/1")
