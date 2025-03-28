@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.todolist.model.Profile;
+import com.example.todolist.repository.ProfileRepository;
+import com.example.todolist.service.ProfileService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.todolist.util.Status;
 import com.example.todolist.util.Exceptions.ObjectNotFoundException;
-import com.example.todolist.task.Task;
+import com.example.todolist.model.Task;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {

@@ -5,6 +5,9 @@ import static org.mockito.BDDMockito.given;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.todolist.model.Profile;
+import com.example.todolist.rest.ProfileController;
+import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.Exceptions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
