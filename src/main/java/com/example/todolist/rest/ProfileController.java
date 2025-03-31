@@ -6,6 +6,7 @@ import com.example.todolist.converter.profile.ProfileRequestDTOToProfileConverte
 import com.example.todolist.converter.profile.ProfileToProfileDTOConverter;
 import com.example.todolist.dto.profile.ProfileDTO;
 import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 
 @RestController
+@SecurityRequirement(name = "BearerAuth")
 public class ProfileController {
     private final ProfileService profileService;
 

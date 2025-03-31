@@ -8,17 +8,37 @@ plugins {
     java
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
 }
+
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+description = "todolist"
+java.sourceCompatibility = JavaVersion.VERSION_23
 
 repositories {
     mavenCentral()
 }
+
 extra["snippetsDir"] = file("build/generated-snippets")
+
+// Configurations
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+    // Declare asciidoctorExt explicitly (fixing the mismatch)
+}
+
+// Dependencies
 dependencies {
+    // Corrected configuration name to match declaration
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6")
+    implementation  ("org.liquibase:liquibase-core")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
@@ -28,17 +48,11 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-group = "com.example"
-version = "0.0.1-SNAPSHOT"
-description = "todolist"
-java.sourceCompatibility = JavaVersion.VERSION_23
-
-
-tasks.withType<JavaCompile>() {
+tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
 }
 
-tasks.withType<Javadoc>() {
+tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 
@@ -48,4 +62,16 @@ tasks.withType<Test> {
 
 tasks.test {
     outputs.dir(project.extra["snippetsDir"]!!)
+}
+
+tasks.asciidoctor {
+    inputs.dir(project.extra["snippetsDir"]!!)
+    dependsOn(tasks.test)
+}
+
+tasks.bootJar {
+    dependsOn(tasks.named("asciidoctor"))
+    from(tasks.named<org.asciidoctor.gradle.jvm.AsciidoctorTask>("asciidoctor").get().outputDir.resolve("html5")) {
+        into("static/docs")
+    }
 }

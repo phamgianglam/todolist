@@ -7,11 +7,13 @@ import com.example.todolist.converter.task.TaskRequestDTOToTaskConverter;
 import com.example.todolist.converter.task.TaskToTaskResponseDTOConverter;
 import com.example.todolist.dto.task.TaskRequestDTO;
 import com.example.todolist.dto.task.TaskResponseDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@SecurityRequirement(name = "BearerAuth")
 public class TaskController {
     private final TaskService taskService;
 
