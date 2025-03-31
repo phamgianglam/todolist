@@ -48,11 +48,17 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<JavaCompile> {
+group = "com.example"
+version = "0.0.1-SNAPSHOT"
+description = "todolist"
+java.sourceCompatibility = JavaVersion.VERSION_23
+
+
+tasks.withType<JavaCompile>() {
     options.encoding = "UTF-8"
 }
 
-tasks.withType<Javadoc> {
+tasks.withType<Javadoc>() {
     options.encoding = "UTF-8"
 }
 

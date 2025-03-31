@@ -9,6 +9,7 @@ import com.example.todolist.converter.profile.ProfileRequestDTOToProfileConverte
 import com.example.todolist.dto.profile.ProfileRequestDTO;
 import com.example.todolist.util.JwtUltil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,8 +48,8 @@ public class AuthController {
     }
 
 
-    @PostMapping("/api/v1/register")
-    public ResponseEntity<String> register(@RequestBody ProfileRequestDTO dto) {
+    @RequestMapping("/api/v1/register")
+    public ResponseEntity<String> register(ProfileRequestDTO dto) {
         Profile profile = profileRequestDTOToProfileConverter.convert(dto);
         profile = profileService.createProfile(profile);
         return ResponseEntity.ok("Successfully create profile");
