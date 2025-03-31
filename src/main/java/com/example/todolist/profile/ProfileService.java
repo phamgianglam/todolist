@@ -3,7 +3,9 @@ package com.example.todolist.profile;
 import java.util.List;
 
 import com.example.todolist.util.Exceptions;
+import com.example.todolist.util.Helper;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import com.example.todolist.profile.dto.ProfilePartialRequestDTO;
@@ -19,12 +21,26 @@ public class ProfileService {
     private final ProfileRepository profileRepository;
 
     public Profile findById(Long userId) {
-        return this.profileRepository.findById(userId)
+        Profile profile = this.profileRepository.findById(userId)
                 .orElseThrow(() -> new Exceptions.ObjectNotFoundException("profile"));
+        if (Helper.isAdmin()) {
+            return profile;
+        } else {
+            if (Helper.getCurrentUsername().equals(profile.getUsername())) {
+                return profile;
+            }
+
+            throw new Exceptions.ObjectNotFoundException("profile");
+        }
     }
 
     public List<Profile> findAll() {
-        return this.profileRepository.findAll();
+        if (Helper.isAdmin()){
+            return this.profileRepository.findAll();
+        } else {
+            return this.profileRepository.findByUsername(Helper.getCurrentUsername());
+        }
+
     }
 
     public Profile createProfile(Profile profile) {
@@ -44,7 +60,8 @@ public class ProfileService {
     }
 
     public void deleteProfileById(long profileId) {
-        this.profileRepository.deleteById(profileId);
+        Profile profile = this.findById(profileId);
+        this.profileRepository.delete(profile);
     }
 
     public List<Profile> getByUsername(String username) {

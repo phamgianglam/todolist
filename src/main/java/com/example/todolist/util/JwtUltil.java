@@ -30,7 +30,7 @@ public class JwtUltil {
         long expiryTimeMillis = currentTimeMillis + validityInMilis;
 
         // Create payload: username + timestamp
-        String payload = profile.getUsername() + "|" + expiryTimeMillis;
+        String payload = profile.getUsername() + "|" + profile.getRole() + "|" + expiryTimeMillis;
 
         // Generate HMAC-SHA256 signature
         String signature = generateHmacSha256(payload, secretKey);
@@ -47,10 +47,16 @@ public class JwtUltil {
         return parts[0]; // Username is the first part
     }
 
+    public String getRole(String token) throws IllegalArgumentException{
+        String[] parts = decodeToken(token);
+        validateToken(parts);
+        return parts[1];
+    }
+
     public boolean isExpired(String token) throws IllegalArgumentException {
         String[] parts = decodeToken(token);
         validateToken(parts);
-        long expiryTimeMillis = Long.parseLong(parts[1]); // Expiry time is the second part
+        long expiryTimeMillis = Long.parseLong(parts[2]); // Expiry time is the second part
         return expiryTimeMillis < Instant.now().toEpochMilli();
     }
 
