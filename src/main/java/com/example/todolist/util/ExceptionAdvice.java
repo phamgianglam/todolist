@@ -1,12 +1,11 @@
 package com.example.todolist.util;
 
-import com.example.todolist.system.Result;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
@@ -18,14 +17,12 @@ import java.util.Map;
 public class ExceptionAdvice {
 
     @ExceptionHandler(Exceptions.ObjectNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    Result handlerNotFoundException(Exceptions.ObjectNotFoundException ex) {
-        return new Result(404, ex.getMessage());
+    ResponseEntity<String> handlerNotFoundException(Exceptions.ObjectNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Object not found");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    Result handleValidationException(MethodArgumentNotValidException ex) {
+    ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
         List<ObjectError> errors = ex.getBindingResult().getAllErrors();
         Map<String, String> map = new HashMap<>(errors.size());
         errors.forEach((error) -> {
@@ -34,6 +31,6 @@ public class ExceptionAdvice {
             map.put(key, val);
         });
 
-        return new Result(map, 400, "Bad request");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("BAD REQUEST");
     }
 }

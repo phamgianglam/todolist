@@ -1,6 +1,6 @@
 package com.example.todolist.util;
 
-import com.example.todolist.profile.Profile;
+import com.example.todolist.model.Profile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

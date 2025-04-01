@@ -25,7 +25,7 @@ public class SecurityConfiguration { // Removed extends WebSecurityConfiguration
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        auth -> auth.requestMatchers("/api/v1/auth/**", "/api/v1/register/**")
+                        auth -> auth.requestMatchers("/api/v1/auth/**", "/api/v1/register/**", "/api-docs/**", "/swagger-ui/**")
                                 .permitAll().anyRequest().authenticated())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class); // Fixed
                                                                                                 // filter
