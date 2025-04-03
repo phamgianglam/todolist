@@ -1,13 +1,12 @@
 package com.example.todolist.model;
 
 import com.example.todolist.util.Status;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -15,7 +14,7 @@ import java.time.ZonedDateTime;
 public class Task implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private long id;
 
     private String title;
@@ -25,6 +24,14 @@ public class Task implements Serializable {
     private Status status;
 
     private ZonedDateTime dueDate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tasks_tags",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    Set<Tag> tags = new HashSet<>();
 
     @ManyToOne
     private Profile owner;

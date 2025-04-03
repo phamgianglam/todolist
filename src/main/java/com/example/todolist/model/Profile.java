@@ -9,10 +9,12 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "profile_user")
 public class Profile implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name= "user_seq", sequenceName = "user_sequence", allocationSize = 1)
     private long id;
 
     private String username;

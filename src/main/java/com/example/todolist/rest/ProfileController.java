@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @SecurityRequirement(name = "BearerAuth")
+@RequestMapping("/api/v1/profiles")
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -31,7 +32,7 @@ public class ProfileController {
         this.profileRequestDTOToProfileConverter = profileRequestDTOToProfileConverter;
     }
 
-    @GetMapping("/api/v1/profiles/{profileId}")
+    @GetMapping("/{profileId}")
     public ResponseEntity<ProfileDTO> findUseById(@PathVariable long profileId) {
 
         Profile profile = this.profileService.findById(profileId);
@@ -39,7 +40,7 @@ public class ProfileController {
         return ResponseEntity.ok(profileDTO);
     }
 
-    @GetMapping("/api/v1/profiles/")
+    @GetMapping("/")
     public ResponseEntity<List<ProfileDTO>> findAll() {
         List<Profile> profiles = this.profileService.findAll();
         List<ProfileDTO> profilesDTO =
@@ -48,7 +49,7 @@ public class ProfileController {
     }
 
 
-    @PatchMapping("/api/v1/profiles/{profileId}")
+    @PatchMapping("/{profileId}")
     public ResponseEntity<Void> patchProfile(
             @Valid @RequestBody ProfilePartialRequestDTO profilePartialRequestDTO,
             @PathVariable long profileId) {
@@ -57,7 +58,7 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/api/v1/profiles/{profileId}")
+    @DeleteMapping("/{profileId}")
     public ResponseEntity<Void> deleteProfile(@PathVariable long profileId) {
         this.profileService.deleteProfileById(profileId);
 

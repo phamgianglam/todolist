@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @SecurityRequirement(name = "BearerAuth")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
     private final TaskService taskService;
 
@@ -29,7 +30,7 @@ public class TaskController {
         this.taskToTaskResponseDTOConverter = taskToTaskResponseDTOConverter;
     }
 
-    @PostMapping("/api/v1/tasks/")
+    @PostMapping("/")
     public ResponseEntity<TaskResponseDTO> createTask(@RequestBody TaskRequestDTO taskRequestDTO) {
         Task task = this.taskRequestDTOToTaskConverter.convert(taskRequestDTO);
 
@@ -43,14 +44,14 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
-    @GetMapping("/api/v1/tasks/{taskId}")
+    @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponseDTO> findById(@PathVariable long taskId) {
         Task task = this.taskService.findbyId(taskId);
         TaskResponseDTO dto = this.taskToTaskResponseDTOConverter.convert(task);
         return ResponseEntity.ok(dto);
     }
 
-    @GetMapping("/api/v1/tasks/")
+    @GetMapping("/")
     public ResponseEntity<List<TaskResponseDTO>> findAll() {
         List<Task> tasks = this.taskService.findAll();
         List<TaskResponseDTO> TasksDtos =
@@ -59,14 +60,14 @@ public class TaskController {
         return ResponseEntity.ok(TasksDtos);
     }
 
-    @DeleteMapping("/api/v1/tasks/{taskId}")
+    @DeleteMapping("/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable long taskId) {
         this.taskService.deleteTask(taskId);
 
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/api/v1/tasks/{taskId}")
+    @PatchMapping("/{taskId}")
     public ResponseEntity<Void> patchTask(@PathVariable long taskId, @RequestBody TaskRequestDTO body) {
         Task task = this.taskRequestDTOToTaskConverter.convert(body);
         if (task != null){
@@ -75,4 +76,7 @@ public class TaskController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("{taskId}/tags")
+    public ResponseEntity<void> adjustTask
 }
