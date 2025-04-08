@@ -1,5 +1,20 @@
+#databaseChangeLog:
+#  - include:
+#      file: db/changelog/changes/001-initial-schema.sql
+#  - include:
+#       file: db/changelog/changes/002-add-tasks-table.sql
+#  - include:
+#       file: db/changelog/changes/003-adding-tags-and-many-to-many.sql
 databaseChangeLog:
-  - include:
-      file: db/changelog/changes/001-initial-schema.sql
-  - include:
-       file: db/changelog/changes/002-add-tasks-table.sql
+  - changeSet:
+      id: 1
+      author: your_name
+      changes:
+        - sqlFile:
+            path: changes/001-initial-schema.sql
+            relativeToChangelogFile: true
+        - tagDatabase:
+            tag: initial-version
+      rollback:
+        - sql: |
+            DROP TABLE IF EXISTS example_table;

@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.4'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.diffplug.spotless' version '6.25.0' // Updated Spotless
 }
 
 group = 'com.example'
@@ -15,14 +16,12 @@ repositories {
 
 ext.snippetsDir = file("build/generated-snippets")
 
-// Configurations
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
 
-// Dependencies
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
@@ -37,6 +36,12 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+spotless {
+    java {
+        googleJavaFormat() // Enforce Google Java Format
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
