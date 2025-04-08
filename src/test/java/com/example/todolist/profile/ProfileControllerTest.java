@@ -1,32 +1,32 @@
-//package com.example.todolist.profile;
+// package com.example.todolist.profile;
 //
-//import static org.mockito.BDDMockito.given;
+// import static org.mockito.BDDMockito.given;
 //
-//import java.util.ArrayList;
-//import java.util.List;
+// import java.util.ArrayList;
+// import java.util.List;
 //
-//import com.example.todolist.model.Profile;
-//import com.example.todolist.rest.ProfileController;
-//import com.example.todolist.service.ProfileService;
-//import com.example.todolist.util.Exceptions;
-//import org.hamcrest.Matchers;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
+// import com.example.todolist.model.Profile;
+// import com.example.todolist.rest.ProfileController;
+// import com.example.todolist.service.ProfileService;
+// import com.example.todolist.util.Exceptions;
+// import org.hamcrest.Matchers;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
 //
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.http.MediaType;
-//import org.springframework.test.context.bean.override.mockito.MockitoBean;
-//import org.springframework.test.web.servlet.MockMvc;
-//import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-//import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.http.MediaType;
+// import org.springframework.test.context.bean.override.mockito.MockitoBean;
+// import org.springframework.test.web.servlet.MockMvc;
+// import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+// import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 //
 //
-//@SpringBootTest
-//@AutoConfigureMockMvc
-//class ProfileControllerTest {
+// @SpringBootTest
+// @AutoConfigureMockMvc
+// class ProfileControllerTest {
 //
 //    @Autowired
 //    MockMvc mockMvc;
@@ -103,4 +103,4 @@
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.data",
 //                        Matchers.hasSize(this.profiles.size())));
 //    }
-//}
+// }

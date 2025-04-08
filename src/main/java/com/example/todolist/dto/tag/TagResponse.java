@@ -1,4 +1,3 @@
 package com.example.todolist.dto.tag;
 
-public record TagResponse(Long id, String name) {
-}
+public record TagResponse(Long id, String name) {}

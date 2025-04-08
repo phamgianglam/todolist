@@ -1,32 +1,32 @@
-//package com.example.todolist.profile;
+// package com.example.todolist.profile;
 //
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertThrows;
-//import static org.mockito.BDDMockito.given;
+// import static org.junit.jupiter.api.Assertions.assertEquals;
+// import static org.junit.jupiter.api.Assertions.assertThrows;
+// import static org.mockito.BDDMockito.given;
 //
-//import java.time.ZonedDateTime;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Optional;
+// import java.time.ZonedDateTime;
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.Optional;
 //
-//import com.example.todolist.model.Profile;
-//import com.example.todolist.repository.ProfileRepository;
-//import com.example.todolist.service.ProfileService;
-//import org.junit.jupiter.api.AfterEach;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.Mockito;
-//import org.mockito.junit.jupiter.MockitoExtension;
+// import com.example.todolist.model.Profile;
+// import com.example.todolist.repository.ProfileRepository;
+// import com.example.todolist.service.ProfileService;
+// import org.junit.jupiter.api.AfterEach;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.extension.ExtendWith;
+// import org.mockito.InjectMocks;
+// import org.mockito.Mock;
+// import org.mockito.Mockito;
+// import org.mockito.junit.jupiter.MockitoExtension;
 //
-//import com.example.todolist.util.Status;
-//import com.example.todolist.util.Exceptions.ObjectNotFoundException;
-//import com.example.todolist.model.Task;
+// import com.example.todolist.util.Status;
+// import com.example.todolist.util.Exceptions.ObjectNotFoundException;
+// import com.example.todolist.model.Task;
 //
-//@ExtendWith(MockitoExtension.class)
-//class ProfileServiceTest {
+// @ExtendWith(MockitoExtension.class)
+// class ProfileServiceTest {
 //
 //    @Mock
 //    ProfileRepository profileRepository;
@@ -62,7 +62,8 @@
 //    @Test
 //    void testFindByIdSuccess() {
 //
-//        given(profileRepository.findById(1L)).willReturn(Optional.of(this.profileList.getFirst()));
+//
+// given(profileRepository.findById(1L)).willReturn(Optional.of(this.profileList.getFirst()));
 //
 //        Profile result = profileService.findById(1L);
 //        assertEquals(result.getId(), this.profileList.getFirst().getId());
@@ -85,4 +86,4 @@
 //        List<Profile> profiles = this.profileService.findAll();
 //        assertEquals(profiles.size(), this.profileList.size());
 //    }
-//}
+// }

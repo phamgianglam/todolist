@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @SecurityScheme(
-        name = "BearerAuth",              // Name of the security scheme
-        type = SecuritySchemeType.HTTP,   // Type is HTTP for JWT
-        scheme = "bearer",                // Scheme is "bearer"
-        bearerFormat = "JWT"              // Indicates the format is JWT
-)
-public class SpingDocConfiguration {
-}
+    name = "BearerAuth", // Name of the security scheme
+    type = SecuritySchemeType.HTTP, // Type is HTTP for JWT
+    scheme = "bearer", // Scheme is "bearer"
+    bearerFormat = "JWT" // Indicates the format is JWT
+    )
+public class SpingDocConfiguration {}

@@ -1,8 +1,8 @@
 package com.example.todolist.model;
 
+import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class Tag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    Long id;
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  Long id;
 
-    @ManyToMany(mappedBy = "tags")
-    Set<Task> tasks = new HashSet<>();
+  private String name;
+
+  @ManyToMany(mappedBy = "tags")
+  Set<Task> tasks = new HashSet<>();
 }

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class TagRequestToTagConverter implements Converter<TagRequest, Tag> {
 
-    @Override
-    public Tag convert(TagRequest source) {
-        Tag tag = new Tag();
-        tag.setName(source.name());
-        return tag;
-    }
+  @Override
+  public Tag convert(TagRequest source) {
+    Tag tag = new Tag();
+    tag.setName(source.name());
+    return tag;
+  }
 }

@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TagToTagResponseConverter implements Converter<Tag, TagResponse> {
-    @Override
-    public TagResponse convert(Tag source) {
-        TagResponse tagResponse = new TagResponse( source.getId(), source.getName());
-        return null;
-    }
+  @Override
+  public TagResponse convert(Tag source) {
+    TagResponse tagResponse = new TagResponse(source.getId(), source.getName());
+    return null;
+  }
 }
