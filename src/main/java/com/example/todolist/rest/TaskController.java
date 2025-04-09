@@ -85,7 +85,7 @@ public class TaskController {
     return ResponseEntity.noContent().build();
   }
 
-  @PatchMapping("{taskId}/tags/{tagId}/add")
+  @PatchMapping("{taskId}/tags/{tagId}/remove")
   public ResponseEntity<Void> removeTagToTask(@PathVariable long taskId, @PathVariable long tagId) {
     this.taskService.removeTagFromTask(taskId, tagId);
     return ResponseEntity.noContent().build();

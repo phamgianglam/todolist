@@ -14,9 +14,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUltil {
   private final String secretKey;
-  private final long validityInMilis = 3600000; // 36 seconds (adjust as needed)
 
-  public JwtUltil(@Value("${jwt.secret}") String secretKey) {
+    public JwtUltil(@Value("${jwt.secret:dev-test-jwt-secrets-placeholder}") String secretKey) {
     if (secretKey == null || secretKey.length() < 32) {
       throw new IllegalArgumentException("Secret key must be at least 32 characters long");
     }
@@ -24,17 +23,16 @@ public class JwtUltil {
   }
 
   public String createToken(Profile profile) {
-    // Get current timestamp in milliseconds
-    long currentTimeMillis = Instant.now().toEpochMilli();
-    long expiryTimeMillis = currentTimeMillis + validityInMilis;
 
-    // Create payload: username + timestamp
+    long currentTimeMillis = Instant.now().toEpochMilli();
+
+      long validityInMilis = 3600000;
+      long expiryTimeMillis = currentTimeMillis + validityInMilis;
+
     String payload = profile.getUsername() + "|" + profile.getRole() + "|" + expiryTimeMillis;
 
-    // Generate HMAC-SHA256 signature
     String signature = generateHmacSha256(payload, secretKey);
 
-    // Combine payload and signature, then encode in Base64
     String token =
         Base64.getUrlEncoder()
             .encodeToString((payload + "|" + signature).getBytes(StandardCharsets.UTF_8));
