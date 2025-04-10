@@ -36,11 +36,15 @@ public class Profile implements Serializable {
     this.tasks.add(task);
   }
 
-  public Profile(String username, String password, String email, List<Task> tasks) {
+  public Profile(String username, String password, String email) {
+    this(username, password, email, Role.USER);
+  }
+
+  public Profile( String username, String password, String email, Role role) {
     this.username = username;
     this.password = password;
     this.email = email;
-    this.tasks = tasks;
+    this.role = role;
   }
 }
 

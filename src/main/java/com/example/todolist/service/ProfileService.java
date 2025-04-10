@@ -58,8 +58,7 @@ public class ProfileService {
   }
 
   public void deleteProfileById(long profileId) {
-    Profile profile = this.findById(profileId);
-    this.profileRepository.delete(profile);
+    this.profileRepository.deleteById(profileId);
   }
 
   public List<Profile> getByUsername(String username) {
