@@ -3,11 +3,15 @@ package com.example.todolist.util;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public final class Helper {
+  @Value("${jwt.enabled}")
+  private static boolean isSecurityEnabled;
+
   public static String convertDateTimeObjectToIsoString(ZonedDateTime dateTime) {
     if (dateTime == null) {
       throw new IllegalArgumentException("ZoneDateTime cannot be null");
@@ -30,15 +34,19 @@ public final class Helper {
   }
 
   public static boolean isAdmin() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    if (isSecurityEnabled) {
+      Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-    if (auth == null) {
-      return false; // No authentication means no admin privileges
+      if (auth == null) {
+        return false;
+      }
+
+      Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+      return authorities.stream()
+          .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+    } else {
+      return true;
     }
-
-    Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-    return authorities.stream()
-        .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
   }
 
   public static String getCurrentUsername() {

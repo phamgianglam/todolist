@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: todolist
+  profiles:
+    active: dev  # Default profile
+
+springdoc:
+  api-docs:
+    path: /api-docs

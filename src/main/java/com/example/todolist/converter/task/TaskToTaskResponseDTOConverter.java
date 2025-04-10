@@ -26,9 +26,7 @@ public class TaskToTaskResponseDTOConverter implements Converter<Task, TaskRespo
             source.getDescription(),
             convertDateTimeObjectToIsoString(source.getDueDate()),
             source.getStatus(),
-            source.getOwner() != null
-                ? this.profileToProfileDTOConverter.convert(source.getOwner())
-                : null);
+            source.getOwner() != null ? source.getOwner().getUsername() : null);
 
     return taskResponseDTO;
   }
