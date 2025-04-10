@@ -13,7 +13,9 @@ target/
 .springBeans
 .sts4-cache
 .gradle/
-
+.env
+.envrc
+bin/
 ### IntelliJ IDEA ###
 .idea
 *.iws
