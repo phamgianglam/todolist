@@ -9,7 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 public final class Helper {
-  @Value("${jwt.enabled}") private static boolean isSecurityEnabled;
+  @Value("${jwt.enabled}")
+  private static boolean isSecurityEnabled;
 
   public static String convertDateTimeObjectToIsoString(ZonedDateTime dateTime) {
     if (dateTime == null) {
@@ -42,12 +43,10 @@ public final class Helper {
 
       Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
       return authorities.stream()
-              .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-    }
-    else {
+          .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
+    } else {
       return true;
     }
-
   }
 
   public static String getCurrentUsername() {

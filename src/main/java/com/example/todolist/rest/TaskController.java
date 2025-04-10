@@ -2,6 +2,7 @@ package com.example.todolist.rest;
 
 import com.example.todolist.converter.task.TaskRequestDTOToTaskConverter;
 import com.example.todolist.converter.task.TaskToTaskResponseDTOConverter;
+import com.example.todolist.dto.task.TaskPartialRequestDTO;
 import com.example.todolist.dto.task.TaskRequestDTO;
 import com.example.todolist.dto.task.TaskResponseDTO;
 import com.example.todolist.model.Task;
@@ -70,11 +71,8 @@ public class TaskController {
 
   @PatchMapping("/{taskId}")
   public ResponseEntity<Void> patchTask(
-      @PathVariable long taskId, @RequestBody TaskRequestDTO body) {
-    Task task = this.taskRequestDTOToTaskConverter.convert(body);
-    if (task != null) {
-      this.taskService.patchTask(task, taskId);
-    }
+      @PathVariable long taskId, @RequestBody TaskPartialRequestDTO body) {
+    this.taskService.patchTask(body, taskId);
 
     return ResponseEntity.noContent().build();
   }

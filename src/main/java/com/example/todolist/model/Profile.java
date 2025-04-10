@@ -40,7 +40,7 @@ public class Profile implements Serializable {
     this(username, password, email, Role.USER);
   }
 
-  public Profile( String username, String password, String email, Role role) {
+  public Profile(String username, String password, String email, Role role) {
     this.username = username;
     this.password = password;
     this.email = email;

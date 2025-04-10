@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class JwtUltil {
   private final String secretKey;
 
-    public JwtUltil(@Value("${jwt.secret:dev-test-jwt-secrets-placeholder}") String secretKey) {
+  public JwtUltil(@Value("${jwt.secret:dev-test-jwt-secrets-placeholder}") String secretKey) {
     if (secretKey == null || secretKey.length() < 32) {
       throw new IllegalArgumentException("Secret key must be at least 32 characters long");
     }
@@ -26,8 +26,8 @@ public class JwtUltil {
 
     long currentTimeMillis = Instant.now().toEpochMilli();
 
-      long validityInMilis = 3600000;
-      long expiryTimeMillis = currentTimeMillis + validityInMilis;
+    long validityInMilis = 3600000;
+    long expiryTimeMillis = currentTimeMillis + validityInMilis;
 
     String payload = profile.getUsername() + "|" + profile.getRole() + "|" + expiryTimeMillis;
 

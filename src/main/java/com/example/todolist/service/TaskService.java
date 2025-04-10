@@ -1,11 +1,15 @@
 package com.example.todolist.service;
 
+import com.example.todolist.dto.task.TaskPartialRequestDTO;
+import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
+import com.example.todolist.repository.ProfileRepository;
 import com.example.todolist.repository.TagRepository;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.util.Exceptions;
 import com.example.todolist.util.Helper;
 import jakarta.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +18,15 @@ import org.springframework.stereotype.Service;
 public class TaskService {
   private final TaskRepository taskRepository;
   private final TagRepository tagRepository;
+  private final ProfileRepository profileRepository;
 
-  public TaskService(TaskRepository taskRepository, TagRepository tagRepository) {
+  public TaskService(
+      TaskRepository taskRepository,
+      TagRepository tagRepository,
+      ProfileRepository profileRepository) {
     this.taskRepository = taskRepository;
     this.tagRepository = tagRepository;
+    this.profileRepository = profileRepository;
   }
 
   public Task createTask(Task task) {
@@ -56,14 +65,21 @@ public class TaskService {
     return this.taskRepository.findByOwnerUsername(username);
   }
 
-  public Task patchTask(Task data, Long taskId) {
+  public Task patchTask(TaskPartialRequestDTO data, Long taskId) {
     Task task = this.findbyId(taskId);
 
-    if (data.getDescription() != null) task.setDescription(data.getDescription());
-    if (data.getDueDate() != null) task.setDueDate(data.getDueDate());
-    if (data.getTitle() != null) task.setTitle(data.getTitle());
-    if (data.getStatus() != null) task.setStatus(data.getStatus());
-    if (data.getOwner() != null) data.getOwner().addTasks(task);
+    if (data.description() != null) task.setDescription(data.description());
+    if (data.dueDate() != null) task.setDueDate(ZonedDateTime.parse(data.dueDate()));
+    if (data.title() != null) task.setTitle(data.title());
+    if (data.status() != null) task.setStatus(data.status());
+    if (data.ownerId() != null) {
+      Profile profile =
+          profileRepository
+              .findById(data.ownerId())
+              .orElseThrow(() -> new Exceptions.ObjectNotFoundException(data.ownerId(), "Profile"));
+      profile.addTasks(task);
+    }
+    ;
     task = this.taskRepository.save(task);
 
     return task;

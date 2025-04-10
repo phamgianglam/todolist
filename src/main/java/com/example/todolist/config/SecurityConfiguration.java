@@ -25,25 +25,28 @@ public class SecurityConfiguration { // Removed extends WebSecurityConfiguration
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     if (jwtEnabled) {
       http.csrf(AbstractHttpConfigurer::disable)
-              .cors(AbstractHttpConfigurer::disable)
-              // .exceptionHandling(exceptionHandling ->
-              // exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
-              // )
-              .sessionManagement(
-                      session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-              .authorizeHttpRequests(
-                      auth ->
-                              auth.requestMatchers(
-                                              "/api/v1/auth/**", "/api/v1/register/**", "/api-docs/**", "/swagger-ui/**")
-                                      .permitAll()
-                                      .anyRequest()
-                                      .authenticated())
-              .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+          .cors(AbstractHttpConfigurer::disable)
+          // .exceptionHandling(exceptionHandling ->
+          // exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
+          // )
+          .sessionManagement(
+              session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+          .authorizeHttpRequests(
+              auth ->
+                  auth.requestMatchers(
+                          "/api/v1/auth/**",
+                          "/api/v1/register/**",
+                          "/api-docs/**",
+                          "/swagger-ui/**")
+                      .permitAll()
+                      .anyRequest()
+                      .authenticated())
+          .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     } else {
-      http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable).authorizeHttpRequests(
-              auth -> auth.anyRequest().permitAll());
+      http.csrf(AbstractHttpConfigurer::disable)
+          .cors(AbstractHttpConfigurer::disable)
+          .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
     }
-
 
     return http.build();
   }
