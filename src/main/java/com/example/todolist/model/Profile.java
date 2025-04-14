@@ -1,5 +1,7 @@
 package com.example.todolist.model;
 
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,14 +15,16 @@ import lombok.*;
 public class Profile implements Serializable {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
   @SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
   private long id;
 
+  @Column(nullable = false)
   private String username;
-
+  @Column(nullable = false)
   private String password;
 
+  @Column(nullable = true)
   private String email;
 
   @Enumerated(EnumType.STRING)
@@ -31,6 +35,8 @@ public class Profile implements Serializable {
       mappedBy = "owner")
   private List<Task> tasks = new ArrayList<>();
 
+  @Column(nullable = true)
+  private String imagePath;
   public void addTasks(Task task) {
     task.setOwner(this);
     this.tasks.add(task);
