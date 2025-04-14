@@ -4,8 +4,8 @@ CREATE TABLE task (
     description VARCHAR(255),
     status VARCHAR(255),
     due_date TIMESTAMP,
-    user_id BIGINT,
-    CONSTRAINT fk_tasks_user FOREIGN KEY (user_id) REFERENCES profile_user(id)
+    owner_id BIGINT,
+    CONSTRAINT fk_tasks_user FOREIGN KEY (owner_id) REFERENCES profile_user(id)
 );
 
 CREATE SEQUENCE task_sequence START WITH 1 INCREMENT BY 1;

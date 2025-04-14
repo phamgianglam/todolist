@@ -1,5 +1,7 @@
 package com.example.todolist.util;
 
+import org.springframework.lang.Nullable;
+
 public class Exceptions {
   public static class ObjectNotFoundException extends RuntimeException {
     // Constructor with id
@@ -14,8 +16,8 @@ public class Exceptions {
   }
 
   public static class BadRequestException extends RuntimeException {
-    public BadRequestException() {
-      super("Bad request");
+    public BadRequestException(@Nullable String message) {
+      super(message != null ? message : "Bad request");
     }
   }
 }

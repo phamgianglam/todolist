@@ -8,13 +8,42 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: your_name
+      author: lampham
       changes:
         - sqlFile:
             path: changes/001-initial-schema.sql
             relativeToChangelogFile: true
         - tagDatabase:
             tag: initial-version
-      rollback:
-        - sql: |
-            DROP TABLE IF EXISTS example_table;
+#      rollback:
+#        - sql: |
+#            DROP TABLE IF EXISTS example_table;
+  - changeSet:
+      id: 2
+      author: lampham
+      changes:
+        - sqlFile:
+            path: changes/002-add-tasks-table.sql
+            relativeToChangelogFile: true
+        - tagDatabase:
+            tag: add-tasks-table
+
+  - changeSet:
+      id: 3
+      author: lampham
+      changes:
+        - sqlFile:
+            path: changes/003-adding-tags-and-many-to-many.sql
+            relativeToChangelogFile: true
+        - tagDatabase:
+            tag: add-tasks-table
+
+  - changeSet:
+      id: 4
+      author: lampham
+      changes:
+        - sqlFile:
+            path: changes/004-alter-profile-user.sql
+            relativeToChangelogFile: true
+        - tagDatabase:
+            tag: add-profile-picture

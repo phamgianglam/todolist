@@ -8,11 +8,17 @@ import com.example.todolist.model.Profile;
 import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.JwtUltil;
 import java.util.List;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
+  @Autowired
+  private PasswordEncoder passwordEncoder;
   private final ProfileService profileService;
   private final AuthDtoToProfileConverter authDtoToProfileConverter;
   private final ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter;
@@ -36,17 +42,17 @@ public class AuthController {
     if (profiles.isEmpty()) return ResponseEntity.notFound().build();
 
     Profile profile = profiles.getFirst();
-    if (!profile.getPassword().equals(requestAuthprofile.getPassword()))
+    if (!passwordEncoder.matches(authDTO.password(), profile.getPassword()))
       return ResponseEntity.notFound().build();
     String token = this.jwtUltil.createToken(profile);
 
     return ResponseEntity.ok(token);
   }
 
-  @GetMapping("/api/v1/register")
-  public ResponseEntity<String> register(ProfileRequestDTO dto) {
+  @PostMapping("/api/v1/register")
+  public ResponseEntity<String> register( @Valid @RequestBody ProfileRequestDTO dto) {
     Profile profile = profileRequestDTOToProfileConverter.convert(dto);
-    profile = profileService.createProfile(profile);
+    profileService.createProfile(profile);
     return ResponseEntity.ok("Successfully create profile");
   }
 }
