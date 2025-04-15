@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class ProfileRequestDTOToProfileConverter implements Converter<ProfileRequestDTO, Profile> {
   @Override
   public Profile convert(ProfileRequestDTO source) {
-      return new Profile(source.username(), source.password(), source.email());
+    return new Profile(source.username(), source.password(), source.email());
   }
 }

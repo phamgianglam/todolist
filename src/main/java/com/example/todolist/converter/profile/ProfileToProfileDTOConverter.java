@@ -10,7 +10,11 @@ public class ProfileToProfileDTOConverter implements Converter<Profile, ProfileD
 
   @Override
   public ProfileDTO convert(Profile source) {
-      return new ProfileDTO(
-          source.getId(), source.getUsername(), source.getEmail(), source.getTasks().size(), source.getImagePath());
+    return new ProfileDTO(
+        source.getId(),
+        source.getUsername(),
+        source.getEmail(),
+        source.getTasks().size(),
+        source.getImagePath());
   }
 }

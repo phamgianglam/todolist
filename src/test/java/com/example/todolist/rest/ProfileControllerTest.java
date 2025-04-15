@@ -1,10 +1,14 @@
 package com.example.todolist.rest;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 
+import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
 import com.example.todolist.model.Profile;
 import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.Exceptions;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.List;
 import org.hamcrest.Matchers;
@@ -14,6 +18,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -27,6 +36,8 @@ class ProfileControllerTest {
   @Autowired MockMvc mockMvc;
 
   @MockitoBean ProfileService profileService;
+
+  private static final ObjectMapper mapper = new ObjectMapper();
 
   List<Profile> profiles;
 
@@ -83,11 +94,42 @@ class ProfileControllerTest {
 
   @Test
   void testfindAll() throws Exception {
-    given(this.profileService.findAll()).willReturn(this.profiles);
+    var page = PageRequest.of(0, 10, Sort.Direction.ASC, "id");
+    var pageResult = new PageImpl<>(this.profiles, page, 10);
+    given(this.profileService.findAll(any(Specification.class), any(Pageable.class)))
+        .willReturn(pageResult);
 
     this.mockMvc
         .perform(MockMvcRequestBuilders.get("/api/v1/profiles/").accept(MediaType.APPLICATION_JSON))
         .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(this.profiles.size())));
+        .andExpect(
+            MockMvcResultMatchers.jsonPath("$.content", Matchers.hasSize(this.profiles.size())));
+  }
+
+  @Test
+  void testPatchProfile() throws Exception {
+    Profile profile = new Profile("test", "password", "password@email.com");
+    profile.setId(1L);
+
+    var dtoObject = new ProfilePartialRequestDTO(null, "password@email.com");
+    given(
+            this.profileService.partialUpdateProfile(
+                any(ProfilePartialRequestDTO.class), any(Long.class)))
+        .willReturn(profile);
+    this.mockMvc
+        .perform(
+            MockMvcRequestBuilders.patch("/api/v1/profiles/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mapper.writeValueAsString(dtoObject)))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
+  }
+
+  @Test
+  void testDeleteById() throws Exception {
+    doNothing().when(profileService).deleteProfileById(1L);
+    mockMvc
+        .perform(MockMvcRequestBuilders.delete("/api/v1/profiles/1"))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 }

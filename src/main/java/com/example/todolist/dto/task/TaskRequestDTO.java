@@ -4,7 +4,9 @@ import com.example.todolist.util.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record TaskRequestDTO(
     @NotNull @Schema(example = "Clean the house") String title,
     @Schema(example = "Clean the house before leaving the house for school") String description,
@@ -17,4 +19,5 @@ public record TaskRequestDTO(
         @NotNull
         @Schema(example = "2026-02-20T20:19:04Z")
         String dueDate,
-    @Schema(example = "1") Long ownerId) {}
+    @Schema(example = "1") Long ownerId) {
+}

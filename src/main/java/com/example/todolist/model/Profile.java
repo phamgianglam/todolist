@@ -1,7 +1,5 @@
 package com.example.todolist.model;
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ public class Profile implements Serializable {
 
   @Column(nullable = false)
   private String username;
+
   @Column(nullable = false)
   private String password;
 
@@ -37,6 +36,7 @@ public class Profile implements Serializable {
 
   @Column(nullable = true)
   private String imagePath;
+
   public void addTasks(Task task) {
     task.setOwner(this);
     this.tasks.add(task);

@@ -3,7 +3,9 @@ package com.example.todolist.dto.task;
 import com.example.todolist.util.Status;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
 
+@Builder
 public record TaskPartialRequestDTO(
     @Schema(example = "Clean the house") String title,
     @Schema(example = "Clean the house before leaving the house for school") String description,
