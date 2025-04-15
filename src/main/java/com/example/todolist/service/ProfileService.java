@@ -30,8 +30,7 @@ public class ProfileService {
     this.profileRepository = profileRepository;
   }
 
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
 
   private final ProfileRepository profileRepository;
 
@@ -90,11 +89,11 @@ public class ProfileService {
     var profile = findById(id);
 
     var filename = file.getOriginalFilename();
-      assert filename != null;
-      if (filename.lastIndexOf('.') == -1) {
-        throw new IllegalArgumentException("File must have an extension");
-      }
-      var extension = filename.substring(filename.lastIndexOf("."));
+    assert filename != null;
+    if (filename.lastIndexOf('.') == -1) {
+      throw new IllegalArgumentException("File must have an extension");
+    }
+    var extension = filename.substring(filename.lastIndexOf("."));
     var uniqueFileName = UUID.randomUUID() + extension;
 
     Path uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize();

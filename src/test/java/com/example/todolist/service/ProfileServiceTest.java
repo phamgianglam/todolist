@@ -9,6 +9,7 @@ import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
 import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
 import com.example.todolist.repository.ProfileRepository;
+import com.example.todolist.repository.ProfileSpecification;
 import com.example.todolist.util.Exceptions.ObjectNotFoundException;
 import com.example.todolist.util.Status;
 import java.time.ZonedDateTime;
@@ -24,6 +25,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
@@ -84,9 +88,11 @@ class ProfileServiceTest {
   @Test
   void testfindAll() {
     given(profileRepository.findAll()).willReturn(this.profileList);
-
-    List<Profile> profiles = this.profileService.findAll();
-    assertEquals(profiles.size(), this.profileList.size());
+    var page = PageRequest.of(0, 10);
+    Specification<Profile> specification =
+        Specification.where(ProfileSpecification.isAdminUser(false));
+    Page<Profile> profiles = this.profileService.findAll(specification, page);
+    assertEquals(profiles.toList().size(), this.profileList.size());
   }
 
   @Test

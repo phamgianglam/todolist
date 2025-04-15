@@ -34,8 +34,7 @@ public class TaskService {
   }
 
   public void deleteTask(Long taskId) {
-    Task task = this.findbyId(taskId);
-    this.taskRepository.delete(task);
+    this.taskRepository.deleteById(taskId);
   }
 
   public Task findbyId(Long taskId) {

@@ -1,8 +1,5 @@
 package com.example.todolist.rest;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import com.example.todolist.converter.profile.ProfileToProfileDTOConverter;
 import com.example.todolist.dto.profile.ProfileDTO;
 import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
@@ -12,6 +9,7 @@ import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.Exceptions;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,8 +48,10 @@ public class ProfileController {
   public ResponseEntity<Page<ProfileDTO>> findAll(
       @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
           @ParameterObject
-          Pageable pageable, @Nullable @ParameterObject Boolean isAdmin) {
-    Specification<Profile> specification = Specification.where(ProfileSpecification.isAdminUser(isAdmin));
+          Pageable pageable,
+      @Nullable @ParameterObject Boolean isAdmin) {
+    Specification<Profile> specification =
+        Specification.where(ProfileSpecification.isAdminUser(isAdmin));
     Page<Profile> profiles = this.profileService.findAll(specification, pageable);
     Page<ProfileDTO> profilesDTO = profiles.map(profileToProfileDTOConverter::convert);
     return ResponseEntity.ok(profilesDTO);
@@ -73,14 +73,17 @@ public class ProfileController {
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping(path="/{profileId}/images/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<ProfileDTO> uploadAvatarImage(@PathVariable Long profileId, @RequestParam("file")MultipartFile file) throws IOException {
-      if (file.isEmpty()){
-        throw new Exceptions.BadRequestException("Image is empty");
-      }
+  @PostMapping(path = "/{profileId}/images/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<ProfileDTO> uploadAvatarImage(
+      @PathVariable Long profileId, @RequestParam("file") MultipartFile file) throws IOException {
+    if (file.isEmpty()) {
+      throw new Exceptions.BadRequestException("Image is empty");
+    }
 
-      var profile =  this.profileToProfileDTOConverter.convert(profileService.uploadAvatarImage(file, profileId));
+    var profile =
+        this.profileToProfileDTOConverter.convert(
+            profileService.uploadAvatarImage(file, profileId));
 
-      return ResponseEntity.status(200).body(profile);
+    return ResponseEntity.status(200).body(profile);
   }
 }

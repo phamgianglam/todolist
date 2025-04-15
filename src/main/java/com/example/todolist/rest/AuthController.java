@@ -7,18 +7,16 @@ import com.example.todolist.dto.profile.ProfileRequestDTO;
 import com.example.todolist.model.Profile;
 import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.JwtUltil;
-import java.util.List;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuthController {
-  @Autowired
-  private PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
   private final ProfileService profileService;
   private final AuthDtoToProfileConverter authDtoToProfileConverter;
   private final ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter;
@@ -50,7 +48,7 @@ public class AuthController {
   }
 
   @PostMapping("/api/v1/register")
-  public ResponseEntity<String> register( @Valid @RequestBody ProfileRequestDTO dto) {
+  public ResponseEntity<String> register(@Valid @RequestBody ProfileRequestDTO dto) {
     Profile profile = profileRequestDTOToProfileConverter.convert(dto);
     profileService.createProfile(profile);
     return ResponseEntity.ok("Successfully create profile");
