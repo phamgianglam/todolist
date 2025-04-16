@@ -8,8 +8,8 @@ import com.example.todolist.dto.task.TaskResponseDTO;
 import com.example.todolist.model.Task;
 import com.example.todolist.service.TaskService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import java.util.List;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,8 @@ public class TaskController {
   }
 
   @PostMapping("/")
-  public ResponseEntity<TaskResponseDTO> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDTO) {
+  public ResponseEntity<TaskResponseDTO> createTask(
+      @Valid @RequestBody TaskRequestDTO taskRequestDTO) {
     Task task = this.taskRequestDTOToTaskConverter.convert(taskRequestDTO);
 
     if (task.getOwner() != null) {
