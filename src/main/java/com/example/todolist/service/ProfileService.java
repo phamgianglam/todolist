@@ -26,8 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class ProfileService {
 
-  public ProfileService(ProfileRepository profileRepository) {
+  public ProfileService(ProfileRepository profileRepository, PasswordEncoder passwordEncoder) {
     this.profileRepository = profileRepository;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Autowired private PasswordEncoder passwordEncoder;
