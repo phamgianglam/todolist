@@ -19,4 +19,5 @@ public record TaskRequestDTO(
         @NotNull
         @Schema(example = "2026-02-20T20:19:04Z")
         String dueDate,
-    @Schema(example = "1") Long ownerId) {}
+    @Schema(example = "1") Long ownerId) {
+}
