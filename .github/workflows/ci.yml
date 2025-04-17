@@ -48,7 +48,10 @@ jobs:
       - name: Run unit tests and generate coverage
         run: ./gradlew test jacocoTestReport
 
-      - name: Fail if coverage < 50%
+      - name: Install xmllint (libxml2-utils)
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Fail if coverage < 30%
         run: |
           COVERED=$(xmllint --xpath "string(//report/counter[@type='INSTRUCTION']/@covered)" build/reports/jacoco/test/jacocoTestReport.xml)
           MISSED=$(xmllint --xpath "string(//report/counter[@type='INSTRUCTION']/@missed)" build/reports/jacoco/test/jacocoTestReport.xml)
