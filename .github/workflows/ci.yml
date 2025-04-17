@@ -64,5 +64,22 @@ jobs:
           else
             echo "✅ Coverage is good."
           fi
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
+      - name: build docker image
+        run: docker build -t task-management-app:latest
+
+      - name: save docker image
+        run: docker save task-management-app:latest > task-management-app.tar
+
+      - name: Output artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: task-management-app
+          path: task-management-app.tar
 
