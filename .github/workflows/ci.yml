@@ -78,7 +78,7 @@ jobs:
         run: docker save task-management-app:latest > task-management-app.tar
 
       - name: Output artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: task-management-app
           path: task-management-app.tar
