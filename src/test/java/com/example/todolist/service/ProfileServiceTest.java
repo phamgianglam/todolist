@@ -2,6 +2,7 @@ package com.example.todolist.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -26,14 +27,18 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
 class ProfileServiceTest {
 
   @Mock ProfileRepository profileRepository;
 
+  @Mock PasswordEncoder passwordEncoder;
   @InjectMocks ProfileService profileService;
 
   private List<Profile> profileList;
@@ -87,10 +92,12 @@ class ProfileServiceTest {
 
   @Test
   void testfindAll() {
-    given(profileRepository.findAll()).willReturn(this.profileList);
     var page = PageRequest.of(0, 10);
     Specification<Profile> specification =
         Specification.where(ProfileSpecification.isAdminUser(false));
+    var pageResult = new PageImpl<>(this.profileList, page, 10);
+    given(profileRepository.findAll(any(Specification.class), any(Pageable.class)))
+        .willReturn(pageResult);
     Page<Profile> profiles = this.profileService.findAll(specification, page);
     assertEquals(profiles.toList().size(), this.profileList.size());
   }
@@ -101,7 +108,7 @@ class ProfileServiceTest {
     var saveProfile = new Profile("TestUser", "TestPassowrd", "TestUser@gmail.com");
     saveProfile.setId(1L);
     given(profileRepository.save(profile)).willReturn(saveProfile);
-
+    given(passwordEncoder.encode(any(String.class))).willReturn("encodedPassword");
     var result = this.profileService.createProfile(profile);
     assertEquals(saveProfile.getId(), result.getId());
   }
@@ -111,7 +118,7 @@ class ProfileServiceTest {
     var profile = new Profile("TestUser", "TestPassowrd", "TestUser@gmail.com");
     given(profileRepository.save(profile))
         .willThrow(new DataIntegrityViolationException("Unique constraint violation"));
-
+    given(passwordEncoder.encode(any(String.class))).willReturn("encodedPassword");
     assertThrows(
         DataIntegrityViolationException.class, () -> profileService.createProfile(profile));
   }

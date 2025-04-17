@@ -149,6 +149,5 @@ public class TaskControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(dtoObject)))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
-
   }
 }
