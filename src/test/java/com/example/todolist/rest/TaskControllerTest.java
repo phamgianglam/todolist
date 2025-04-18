@@ -22,12 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 public class TaskControllerTest {
   @Autowired MockMvc mockMvc;
@@ -92,7 +94,7 @@ public class TaskControllerTest {
     given(this.taskService.createTask(any(Task.class))).willReturn(tasks.getFirst());
 
     var taskDTO =
-         TaskRequestDTO.builder()
+        TaskRequestDTO.builder()
             .title("Clean")
             .status(Status.DONE)
             .description("Clean the house")
@@ -111,7 +113,7 @@ public class TaskControllerTest {
   @Test
   void testCreateTaskBadDueDAte() throws Exception {
     var taskDTO =
-         TaskRequestDTO.builder()
+        TaskRequestDTO.builder()
             .title("Clean")
             .status(Status.DONE)
             .description("Clean the house")
@@ -131,8 +133,8 @@ public class TaskControllerTest {
   public void testDeleteById() throws Exception {
     doNothing().when(taskService).deleteTask(1L);
     mockMvc
-            .perform(MockMvcRequestBuilders.delete("/api/v1/tasks/1"))
-            .andExpect(MockMvcResultMatchers.status().isNoContent());
+        .perform(MockMvcRequestBuilders.delete("/api/v1/tasks/1"))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
   @Test
