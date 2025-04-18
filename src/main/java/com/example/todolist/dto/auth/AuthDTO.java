@@ -1,3 +1,5 @@
 package com.example.todolist.dto.auth;
 
-public record AuthDTO(String username, String password) {}
+import jakarta.annotation.Nonnull;
+
+public record AuthDTO(@Nonnull String username, @Nonnull String password) {}

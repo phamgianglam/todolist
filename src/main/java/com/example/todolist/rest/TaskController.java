@@ -58,10 +58,10 @@ public class TaskController {
   @GetMapping("/")
   public ResponseEntity<List<TaskResponseDTO>> findAll() {
     List<Task> tasks = this.taskService.findAll();
-    List<TaskResponseDTO> TasksDtos =
+    List<TaskResponseDTO> taskResponseDTOList =
         tasks.stream().map(this.taskToTaskResponseDTOConverter::convert).toList();
 
-    return ResponseEntity.ok(TasksDtos);
+    return ResponseEntity.ok(taskResponseDTOList);
   }
 
   @DeleteMapping("/{taskId}")

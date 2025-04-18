@@ -78,27 +78,26 @@ public class TaskService {
               .orElseThrow(() -> new Exceptions.ObjectNotFoundException(data.ownerId(), "Profile"));
       profile.addTasks(task);
     }
-    ;
     task = this.taskRepository.save(task);
 
     return task;
   }
 
-  public void addTagToTask(Long TaskId, Long TagId) {
+  public void addTagToTask(Long taskId, Long tagId) {
     var tag =
         tagRepository
-            .findById(TagId)
-            .orElseThrow(() -> new Exceptions.ObjectNotFoundException(TagId, "Tag"));
-    var task = findbyId(TaskId);
+            .findById(tagId)
+            .orElseThrow(() -> new Exceptions.ObjectNotFoundException(tagId, "Tag"));
+    var task = findbyId(taskId);
     task.addTagToTask(tag);
   }
 
-  public void removeTagFromTask(Long TaskId, Long TagId) {
+  public void removeTagFromTask(long taskId, Long tagId) {
     var tag =
         tagRepository
-            .findById(TagId)
-            .orElseThrow(() -> new Exceptions.ObjectNotFoundException(TagId, "Tag"));
-    var task = findbyId(TaskId);
+            .findById(tagId)
+            .orElseThrow(() -> new Exceptions.ObjectNotFoundException(tagId, "Tag"));
+    var task = findbyId(taskId);
     task.removeTagFromTasks(tag);
   }
 }

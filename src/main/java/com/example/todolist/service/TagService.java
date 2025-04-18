@@ -6,14 +6,15 @@ import com.example.todolist.dto.tag.TagRequest;
 import com.example.todolist.dto.tag.TagResponse;
 import com.example.todolist.model.Tag;
 import com.example.todolist.repository.TagRepository;
+import jakarta.annotation.Nonnull;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TagService {
-  private TagRepository tagRepository;
-  private TagRequestToTagConverter tagRequestToTagConverter;
-  private TagToTagResponseConverter tagToTagResponseConverter;
+  private final TagRepository tagRepository;
+  private final TagRequestToTagConverter tagRequestToTagConverter;
+  private final TagToTagResponseConverter tagToTagResponseConverter;
 
   public TagService(
       TagRepository tagRepository,
@@ -24,10 +25,14 @@ public class TagService {
     this.tagToTagResponseConverter = tagToTagResponseConverter;
   }
 
-  public TagResponse createTag(TagRequest tagRequest) {
+  public TagResponse createTag(@Nonnull TagRequest tagRequest) {
     Tag tag = tagRequestToTagConverter.convert(tagRequest);
-    tag = tagRepository.save(tag);
-    return tagToTagResponseConverter.convert(tag);
+    if (tag != null) {
+      tag = tagRepository.save(tag);
+      return tagToTagResponseConverter.convert(tag);
+    } else {
+      throw new IllegalArgumentException("Tag cannot be null");
+    }
   }
 
   public List<TagResponse> findAll() {
