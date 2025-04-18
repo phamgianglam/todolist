@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,9 +21,14 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-  @Autowired private JwtUltil jwtUltil;
+  private final JwtUltil jwtUltil;
 
-  @Autowired private ProfileService profileService;
+  private final ProfileService profileService;
+
+  public JwtRequestFilter(JwtUltil jwtUltil, ProfileService profileService) {
+    this.jwtUltil = jwtUltil;
+    this.profileService = profileService;
+  }
 
   @Override
   protected void doFilterInternal(

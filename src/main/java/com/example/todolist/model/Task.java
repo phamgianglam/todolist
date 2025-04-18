@@ -6,11 +6,15 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class Task implements Serializable {
 
@@ -31,7 +35,8 @@ public class Task implements Serializable {
       name = "tasks_tags",
       joinColumns = @JoinColumn(name = "task_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
-  Set<Tag> tags = new HashSet<>();
+  @Fetch(FetchMode.JOIN)
+  private transient Set<Tag> tags = new HashSet<>();
 
   @ManyToOne private Profile owner;
 

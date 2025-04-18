@@ -1,15 +1,19 @@
 package com.example.todolist.model;
 
 import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@ToString(exclude = "tasks")
 @NoArgsConstructor
-public class Tag {
+public class Tag implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   Long id;
@@ -17,5 +21,5 @@ public class Tag {
   private String name;
 
   @ManyToMany(mappedBy = "tags")
-  Set<Task> tasks = new HashSet<>();
+  private Set<Task> tasks = new HashSet<>();
 }

@@ -92,7 +92,7 @@ public class TaskControllerTest {
     given(this.taskService.createTask(any(Task.class))).willReturn(tasks.getFirst());
 
     var taskDTO =
-         TaskRequestDTO.builder()
+        TaskRequestDTO.builder()
             .title("Clean")
             .status(Status.DONE)
             .description("Clean the house")
@@ -111,7 +111,7 @@ public class TaskControllerTest {
   @Test
   void testCreateTaskBadDueDAte() throws Exception {
     var taskDTO =
-         TaskRequestDTO.builder()
+        TaskRequestDTO.builder()
             .title("Clean")
             .status(Status.DONE)
             .description("Clean the house")
@@ -131,8 +131,8 @@ public class TaskControllerTest {
   public void testDeleteById() throws Exception {
     doNothing().when(taskService).deleteTask(1L);
     mockMvc
-            .perform(MockMvcRequestBuilders.delete("/api/v1/tasks/1"))
-            .andExpect(MockMvcResultMatchers.status().isNoContent());
+        .perform(MockMvcRequestBuilders.delete("/api/v1/tasks/1"))
+        .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
   @Test

@@ -4,6 +4,8 @@ import com.example.todolist.model.Profile;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ProfileSpecification {
+  private ProfileSpecification() {}
+
   public static Specification<Profile> isAdminUser(Boolean isAdmin) {
     return ((root, query, criteriaBuilder) -> {
       if (isAdmin == null) {
