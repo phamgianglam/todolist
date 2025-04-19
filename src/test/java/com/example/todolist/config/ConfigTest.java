@@ -11,7 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class ConfigTest {
+class ConfigTest {
   @Autowired private PasswordEncoder passwordEncoder;
 
   @Autowired private SecurityFilterChain securityFilterChain;
