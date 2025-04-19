@@ -33,10 +33,8 @@ public class JwtUltil {
 
     String signature = generateHmacSha256(payload, secretKey);
 
-    String token =
-        Base64.getUrlEncoder()
-            .encodeToString((payload + "|" + signature).getBytes(StandardCharsets.UTF_8));
-    return token;
+    return Base64.getUrlEncoder()
+        .encodeToString((payload + "|" + signature).getBytes(StandardCharsets.UTF_8));
   }
 
   public String getUsername(String token) throws IllegalArgumentException {

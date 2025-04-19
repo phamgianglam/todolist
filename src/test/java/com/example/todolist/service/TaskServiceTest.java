@@ -26,7 +26,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @ExtendWith(MockitoExtension.class)
-public class TaskServiceTest {
+class TaskServiceTest {
   @Mock TaskRepository taskRepository;
 
   @InjectMocks TaskService taskService;
@@ -54,7 +54,9 @@ public class TaskServiceTest {
   }
 
   @AfterEach
-  void tearDown() {}
+  void tearDown() {
+    // add tear down logic here
+  }
 
   @Test
   void testFindByIdSuccess() {
@@ -68,12 +70,11 @@ public class TaskServiceTest {
   void testFindByIdNotFound() {
     given(taskRepository.findById(1L)).willReturn(Optional.empty());
 
-    Exception exception =
-        assertThrows(
-            Exceptions.ObjectNotFoundException.class,
-            () -> {
-              taskService.findbyId(1L);
-            });
+    assertThrows(
+        Exceptions.ObjectNotFoundException.class,
+        () -> {
+          taskService.findbyId(1L);
+        });
   }
 
   @Test
@@ -96,30 +97,29 @@ public class TaskServiceTest {
   void testCreateTaskExisted() {
     given(taskRepository.save(any(Task.class)))
         .willThrow(new DataIntegrityViolationException("Task already exists"));
-
-    assertThrows(
-        DataIntegrityViolationException.class, () -> taskService.createTask(tasks.getFirst()));
+    var task = tasks.getFirst();
+    assertThrows(DataIntegrityViolationException.class, () -> taskService.createTask(task));
   }
 
   @Test
   void testUpdateTask() {
     var oldItem = tasks.getFirst();
     given(taskRepository.findById(1L)).willReturn(Optional.of(oldItem));
-    var record = new Task();
-    record.setId(oldItem.getId());
-    record.setDescription(oldItem.getDescription());
-    record.setTitle(oldItem.getTitle());
-    record.setOwner(oldItem.getOwner());
-    record.setTags(oldItem.getTags());
-    record.setDueDate(oldItem.getDueDate());
-    record.setStatus(Status.PENDING);
+    var profile = new Task();
+    profile.setId(oldItem.getId());
+    profile.setDescription(oldItem.getDescription());
+    profile.setTitle(oldItem.getTitle());
+    profile.setOwner(oldItem.getOwner());
+    profile.setTags(oldItem.getTags());
+    profile.setDueDate(oldItem.getDueDate());
+    profile.setStatus(Status.PENDING);
 
-    given(taskRepository.save(oldItem)).willReturn(record);
+    given(taskRepository.save(oldItem)).willReturn(profile);
     var dto = new TaskPartialRequestDTO(null, null, Status.PENDING, null, null);
     var result = this.taskService.patchTask(dto, 1L);
 
-    assertEquals(result.getId(), record.getId());
-    assertEquals(result.getStatus(), record.getStatus());
+    assertEquals(result.getId(), profile.getId());
+    assertEquals(result.getStatus(), profile.getStatus());
   }
 
   @Test

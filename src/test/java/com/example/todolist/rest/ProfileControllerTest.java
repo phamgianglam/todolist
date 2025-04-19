@@ -70,7 +70,9 @@ class ProfileControllerTest {
   }
 
   @AfterEach
-  void tearDown() {}
+  void tearDown() {
+    // teardown logic
+  }
 
   @Test
   void testFindUseById() throws Exception {
