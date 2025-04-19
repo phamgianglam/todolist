@@ -70,7 +70,9 @@ class ProfileServiceTest {
   }
 
   @AfterEach
-  void tearDown() {}
+  void tearDown() {
+    // add tear down logic here
+  }
 
   @Test
   void testFindByIdSuccess() {
@@ -82,7 +84,7 @@ class ProfileServiceTest {
   }
 
   @Test
-  public void testFindByIdNotFound() {
+  void testFindByIdNotFound() {
     given(profileRepository.findById(Mockito.any(Long.class))).willReturn(Optional.empty());
 
     ObjectNotFoundException exception =
@@ -127,20 +129,20 @@ class ProfileServiceTest {
   void testUpdateProfile() {
     var oldItem = profileList.getFirst();
     given(profileRepository.findById(1L)).willReturn(Optional.of(oldItem));
-    var record = new Profile();
-    record.setId(oldItem.getId());
-    record.setRole(oldItem.getRole());
-    record.setUsername(oldItem.getUsername());
-    record.setPassword(oldItem.getPassword());
+    var profile = new Profile();
+    profile.setId(oldItem.getId());
+    profile.setRole(oldItem.getRole());
+    profile.setUsername(oldItem.getUsername());
+    profile.setPassword(oldItem.getPassword());
     var newEmail = "stuff@gmail.com";
-    record.setEmail(newEmail);
+    profile.setEmail(newEmail);
 
-    given(profileRepository.save(oldItem)).willReturn(record);
+    given(profileRepository.save(oldItem)).willReturn(profile);
     var dto = new ProfilePartialRequestDTO(null, newEmail);
     var result = this.profileService.partialUpdateProfile(dto, 1L);
 
-    assertEquals(result.getId(), record.getId());
-    assertEquals(result.getEmail(), record.getEmail());
+    assertEquals(result.getId(), profile.getId());
+    assertEquals(result.getEmail(), profile.getEmail());
   }
 
   @Test

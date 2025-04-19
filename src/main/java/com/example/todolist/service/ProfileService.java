@@ -25,11 +25,14 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional
 public class ProfileService {
 
-  public ProfileService(ProfileRepository profileRepository, PasswordEncoder passwordEncoder) {
-    this.profileRepository = profileRepository;
+  public ProfileService(
+      Helper helper, PasswordEncoder passwordEncoder, ProfileRepository profileRepository) {
+    this.helper = helper;
     this.passwordEncoder = passwordEncoder;
+    this.profileRepository = profileRepository;
   }
 
+  private final Helper helper;
   private final PasswordEncoder passwordEncoder;
 
   private final ProfileRepository profileRepository;
@@ -42,10 +45,10 @@ public class ProfileService {
         this.profileRepository
             .findById(userId)
             .orElseThrow(() -> new Exceptions.ObjectNotFoundException("profile"));
-    if (Helper.isAdmin()) {
+    if (helper.isAdmin()) {
       return profile;
     } else {
-      if (Objects.equals(Helper.getCurrentUsername(), profile.getUsername())) {
+      if (Objects.equals(helper.getCurrentUserName(), profile.getUsername())) {
         return profile;
       }
 
@@ -54,10 +57,10 @@ public class ProfileService {
   }
 
   public Page<Profile> findAll(Specification<Profile> specification, Pageable pageable) {
-    if (Helper.isAdmin()) {
+    if (helper.isAdmin()) {
       return this.profileRepository.findAll(specification, pageable);
     } else {
-      return this.profileRepository.findByUsername(Helper.getCurrentUsername(), pageable);
+      return this.profileRepository.findByUsername(helper.getCurrentUserName(), pageable);
     }
   }
 

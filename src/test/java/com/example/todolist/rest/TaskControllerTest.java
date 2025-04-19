@@ -31,7 +31,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
-public class TaskControllerTest {
+class TaskControllerTest {
   @Autowired MockMvc mockMvc;
 
   @MockitoBean TaskService taskService;
@@ -61,7 +61,9 @@ public class TaskControllerTest {
   }
 
   @AfterEach
-  void tearDown() {}
+  void tearDown() {
+    // tear down logic
+  }
 
   @Test
   void testFindTaskById() throws Exception {
@@ -130,7 +132,7 @@ public class TaskControllerTest {
   }
 
   @Test
-  public void testDeleteById() throws Exception {
+  void testDeleteById() throws Exception {
     doNothing().when(taskService).deleteTask(1L);
     mockMvc
         .perform(MockMvcRequestBuilders.delete("/api/v1/tasks/1"))
@@ -138,7 +140,7 @@ public class TaskControllerTest {
   }
 
   @Test
-  public void patchTaskSuccessfully() throws Exception {
+  void patchTaskSuccessfully() throws Exception {
     var dtoObject = TaskPartialRequestDTO.builder().title("go to school").build();
     var task = tasks.getFirst();
     task.setTitle("go to school");

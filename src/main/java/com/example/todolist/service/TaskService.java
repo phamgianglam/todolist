@@ -19,14 +19,17 @@ public class TaskService {
   private final TaskRepository taskRepository;
   private final TagRepository tagRepository;
   private final ProfileRepository profileRepository;
+  private final Helper helper;
 
   public TaskService(
       TaskRepository taskRepository,
       TagRepository tagRepository,
-      ProfileRepository profileRepository) {
+      ProfileRepository profileRepository,
+      Helper helper) {
     this.taskRepository = taskRepository;
     this.tagRepository = tagRepository;
     this.profileRepository = profileRepository;
+    this.helper = helper;
   }
 
   public Task createTask(Task task) {
@@ -42,20 +45,20 @@ public class TaskService {
         this.taskRepository
             .findById(taskId)
             .orElseThrow(() -> new Exceptions.ObjectNotFoundException("task"));
-    if (Helper.isAdmin()) {
+    if (helper.isAdmin()) {
       return task;
     } else {
-      String username = Helper.getCurrentUsername();
+      String username = helper.getCurrentUserName();
       if (username.equals(task.getOwner().getUsername())) return task;
       throw new Exceptions.ObjectNotFoundException("task");
     }
   }
 
   public List<Task> findAll() {
-    if (Helper.isAdmin()) {
+    if (helper.isAdmin()) {
       return this.taskRepository.findAll();
     } else {
-      String username = Helper.getCurrentUsername();
+      String username = helper.getCurrentUserName();
       return this.findAllByOwner(username);
     }
   }

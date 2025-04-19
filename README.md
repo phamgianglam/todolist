@@ -38,7 +38,7 @@ Represents a specific actionable item within a task list.
 | status     | Enum    | Task status: PENDING, IN_PROGRESS, DONE|
 | dueDate    | Date    | Deadline for the task                  |
 | parentTaskListId | Long | ID of the parent task list           |
-| Owner      | Long | ID of the user own that task              |
+| Owner      | Long | ID of the profile own that task              |
 
 ---
 
@@ -53,17 +53,17 @@ Represents a collection of tasks or nested task lists to track broader goals.
 | status     | Enum    | Task list status: PENDING, IN_PROGRESS, DONE       |
 | tasks      | List<Task> | Collection of tasks within the list             |
 | subTaskLists | List<TaskList> | Nested task lists within the current list |
-| Owner      | Long | ID of the user own that task              |
+| Owner      | Long | ID of the profile own that task              |
 
 ---
 
 ## API Endpoints
 
 ### User Endpoints
-- **POST /api/users** - Create a new user
-- **GET /api/users/{id}** - Get user by ID
-- **PUT /api/users/{id}** - Update user details
-- **DELETE /api/users/{id}** - Delete user
+- **POST /api/users** - Create a new profile
+- **GET /api/users/{id}** - Get profile by ID
+- **PUT /api/users/{id}** - Update profile details
+- **DELETE /api/users/{id}** - Delete profile
 
 ### Task Endpoints
 - **POST /api/tasks** - Create a new task
