@@ -29,8 +29,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
   @Mock TaskRepository taskRepository;
-  @Mock
-  Helper helper;
+  @Mock Helper helper;
   @InjectMocks TaskService taskService;
 
   private List<Task> tasks;
@@ -83,7 +82,16 @@ class TaskServiceTest {
   @Test
   void testFindAllSuccess() {
     given(taskRepository.findAll()).willReturn(tasks);
+    given(helper.isAdmin()).willReturn(true);
+    List<Task> result = taskService.findAll();
+    assertEquals(result.getFirst().getId(), tasks.getFirst().getId());
+  }
 
+  @Test
+  void TestFindAllSuccessNonAdmin() {
+    given(helper.isAdmin()).willReturn(false);
+    given(helper.getCurrentUserName()).willReturn("JohnDoe");
+    given(taskRepository.findByOwnerUsername("JohnDoe")).willReturn(tasks);
     List<Task> result = taskService.findAll();
     assertEquals(result.getFirst().getId(), tasks.getFirst().getId());
   }
@@ -108,6 +116,29 @@ class TaskServiceTest {
   void testUpdateTask() {
     var oldItem = tasks.getFirst();
     given(taskRepository.findById(1L)).willReturn(Optional.of(oldItem));
+    given(helper.isAdmin()).willReturn(true);
+    var task = new Task();
+    task.setId(oldItem.getId());
+    task.setDescription(oldItem.getDescription());
+    task.setTitle(oldItem.getTitle());
+    task.setOwner(oldItem.getOwner());
+    task.setDueDate(oldItem.getDueDate());
+    task.setStatus(Status.PENDING);
+    oldItem.getTags().forEach(task::addTagToTask);
+    given(taskRepository.save(oldItem)).willReturn(task);
+    var dto = new TaskPartialRequestDTO(null, null, Status.PENDING, null, null);
+    var result = this.taskService.patchTask(dto, 1L);
+
+    assertEquals(result.getId(), task.getId());
+    assertEquals(result.getStatus(), task.getStatus());
+  }
+
+  @Test
+  void testUpdateTaskNonAdmin() {
+    var oldItem = tasks.getFirst();
+    given(taskRepository.findById(1L)).willReturn(Optional.of(oldItem));
+    given(helper.isAdmin()).willReturn(false);
+    given(helper.getCurrentUserName()).willReturn("JohnDoe");
     var task = new Task();
     task.setId(oldItem.getId());
     task.setDescription(oldItem.getDescription());

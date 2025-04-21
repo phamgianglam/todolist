@@ -31,6 +31,7 @@ jobs:
       DB_USERNAME: test
       DB_PASSWORD: test
       DB_URL: jdbc:postgresql://localhost:5432/test
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -65,11 +66,18 @@ jobs:
             echo "✅ Coverage is good."
           fi
 
+      - name: Compile classes (for SonarCloud)
+        run: ./gradlew classes
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           args: >
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+            -Dsonar.projectKey=phamgianglam_todolist
+            -Dsonar.organization=phamgianglam
+            -Dsonar.java.binaries=build/classes
+            -Dsonar.exclusions=**/src/test/**,**/test/**
+            -Dsonar.cpd.exclusions=**/src/test/**,**/test/*
   build:
     runs-on: ubuntu-latest
     needs: test

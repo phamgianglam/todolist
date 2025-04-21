@@ -40,8 +40,7 @@ class ProfileServiceTest {
   @Mock ProfileRepository profileRepository;
 
   @Mock PasswordEncoder passwordEncoder;
-  @Mock
-  Helper helper;
+  @Mock Helper helper;
   @InjectMocks ProfileService profileService;
 
   private List<Profile> profileList;
@@ -172,6 +171,6 @@ class ProfileServiceTest {
   @Test
   void testDeleteProfile() {
     profileService.deleteProfileById(1L);
-     verify(profileRepository).deleteById(1L);
+    verify(profileRepository).deleteById(1L);
   }
 }
