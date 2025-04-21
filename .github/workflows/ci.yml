@@ -49,7 +49,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Run unit tests and generate coverage
-        run: ./gradlew test jacocoTestReport sonar
+        run: ./gradlew test jacocoTestReport sonarqube
 
       - name: Install xmllint (libxml2-utils)
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
