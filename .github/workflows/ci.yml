@@ -34,6 +34,14 @@ jobs:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     steps:
+      - name: Echo Spring environment variables
+        run: |
+          echo "SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE"
+          echo "DB_USERNAME=$DB_USERNAME"
+          echo "DB_PASSWORD=$DB_PASSWORD"
+          echo "DB_URL=$DB_URL"
+          echo "SONAR_TOKEN=$SONAR_TOKEN"
+
       - name: Checkout code
         uses: actions/checkout@v3
 
