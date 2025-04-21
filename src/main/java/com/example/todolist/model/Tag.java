@@ -21,5 +21,5 @@ public class Tag implements Serializable {
   private String name;
 
   @ManyToMany(mappedBy = "tags")
-  private Set<Task> tasks = new HashSet<>();
+  private final Set<Task> tasks = new HashSet<>();
 }

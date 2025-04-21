@@ -36,7 +36,7 @@ public class Task implements Serializable {
       joinColumns = @JoinColumn(name = "task_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
   @Fetch(FetchMode.JOIN)
-  private transient Set<Tag> tags = new HashSet<>();
+  private final Set<Tag> tags = new HashSet<>();
 
   @ManyToOne private Profile owner;
 

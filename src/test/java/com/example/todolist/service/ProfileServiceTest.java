@@ -12,6 +12,7 @@ import com.example.todolist.model.Task;
 import com.example.todolist.repository.ProfileRepository;
 import com.example.todolist.repository.ProfileSpecification;
 import com.example.todolist.util.Exceptions.ObjectNotFoundException;
+import com.example.todolist.util.Helper;
 import com.example.todolist.util.Status;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,8 @@ class ProfileServiceTest {
   @Mock ProfileRepository profileRepository;
 
   @Mock PasswordEncoder passwordEncoder;
+  @Mock
+  Helper helper;
   @InjectMocks ProfileService profileService;
 
   private List<Profile> profileList;
@@ -78,7 +81,7 @@ class ProfileServiceTest {
   void testFindByIdSuccess() {
 
     given(profileRepository.findById(1L)).willReturn(Optional.of(this.profileList.getFirst()));
-
+    given(helper.isAdmin()).willReturn(Boolean.TRUE);
     Profile result = profileService.findById(1L);
     assertEquals(result.getId(), this.profileList.getFirst().getId());
   }
@@ -86,7 +89,6 @@ class ProfileServiceTest {
   @Test
   void testFindByIdNotFound() {
     given(profileRepository.findById(Mockito.any(Long.class))).willReturn(Optional.empty());
-
     ObjectNotFoundException exception =
         assertThrows(ObjectNotFoundException.class, () -> profileService.findById(1L));
     assertEquals("Could not find profile", exception.getMessage());
@@ -100,6 +102,7 @@ class ProfileServiceTest {
     var pageResult = new PageImpl<>(this.profileList, page, 10);
     given(profileRepository.findAll(any(Specification.class), any(Pageable.class)))
         .willReturn(pageResult);
+    given(helper.isAdmin()).willReturn(Boolean.TRUE);
     Page<Profile> profiles = this.profileService.findAll(specification, page);
     assertEquals(profiles.toList().size(), this.profileList.size());
   }
@@ -129,6 +132,7 @@ class ProfileServiceTest {
   void testUpdateProfile() {
     var oldItem = profileList.getFirst();
     given(profileRepository.findById(1L)).willReturn(Optional.of(oldItem));
+    given(helper.isAdmin()).willReturn(Boolean.TRUE);
     var profile = new Profile();
     profile.setId(oldItem.getId());
     profile.setRole(oldItem.getRole());
@@ -148,7 +152,6 @@ class ProfileServiceTest {
   @Test
   void testUpdateProfileNotFoundExeption() {
     given(profileRepository.findById(1L)).willReturn(Optional.empty());
-
     ObjectNotFoundException exception =
         assertThrows(ObjectNotFoundException.class, () -> profileService.findById(1L));
     assertEquals("Could not find profile", exception.getMessage());
@@ -158,6 +161,7 @@ class ProfileServiceTest {
   void testUpdateProfileIntegrityError() {
     var oldItem = profileList.getFirst();
     given(profileRepository.findById(1L)).willReturn(Optional.of(oldItem));
+    given(helper.isAdmin()).willReturn(Boolean.TRUE);
     given(profileRepository.save(oldItem))
         .willThrow(new DataIntegrityViolationException("Unique constraint violation"));
     var dto = new ProfilePartialRequestDTO(this.profileList.getLast().getUsername(), null);
@@ -168,6 +172,6 @@ class ProfileServiceTest {
   @Test
   void testDeleteProfile() {
     profileService.deleteProfileById(1L);
-    verify(profileRepository).deleteById(1L);
+     verify(profileRepository).deleteById(1L);
   }
 }

@@ -35,7 +35,7 @@ public class Profile implements Serializable {
   @OneToMany(
       cascade = {CascadeType.PERSIST, CascadeType.MERGE},
       mappedBy = "owner")
-  private List<Task> tasks = new ArrayList<>();
+  private final List<Task> tasks = new ArrayList<>();
 
   @Column(nullable = true)
   private String imagePath;
