@@ -73,7 +73,7 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@v2
         with:
           args: >
-            -Dsonar.projectKey=todolist
+            -Dsonar.projectKey=phamgianglam_todolist
             -Dsonar.organization=phamgianglam
             -Dsonar.java.binaries=build/classes
 #            -Dsonar.host.url=https://sonarcloud.io
