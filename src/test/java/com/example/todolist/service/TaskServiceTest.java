@@ -82,7 +82,7 @@ class TaskServiceTest {
   @Test
   void testFindAllSuccess() {
     given(taskRepository.findAll()).willReturn(tasks);
-
+    given(helper.isAdmin()).willReturn(true);
     List<Task> result = taskService.findAll();
     assertEquals(result.getFirst().getId(), tasks.getFirst().getId());
   }
@@ -107,6 +107,7 @@ class TaskServiceTest {
   void testUpdateTask() {
     var oldItem = tasks.getFirst();
     given(taskRepository.findById(1L)).willReturn(Optional.of(oldItem));
+    given(helper.isAdmin()).willReturn(true);
     var task = new Task();
     task.setId(oldItem.getId());
     task.setDescription(oldItem.getDescription());
