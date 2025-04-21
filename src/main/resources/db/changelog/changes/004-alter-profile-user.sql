@@ -3,4 +3,4 @@ ALTER TABLE profile_user
  ALTER COLUMN password set NOT NULL;
 
 ALTER TABLE profile_user
-ADD COLUMN image_path VARCHAR2(255);
+ADD COLUMN image_path VARCHAR(255);

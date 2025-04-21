@@ -1,8 +1,8 @@
 CREATE TABLE task (
     id BIGINT PRIMARY KEY,
-    title VARCHAR2(255),
-    description VARCHAR2(255),
-    status VARCHAR2(255),
+    title VARCHAR(255),
+    description VARCHAR(255),
+    status VARCHAR(255),
     due_date TIMESTAMP,
     owner_id BIGINT,
     CONSTRAINT fk_tasks_user FOREIGN KEY (owner_id) REFERENCES profile_user(id)

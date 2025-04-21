@@ -11,6 +11,7 @@ import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
 import com.example.todolist.repository.TaskRepository;
 import com.example.todolist.util.Exceptions;
+import com.example.todolist.util.Helper;
 import com.example.todolist.util.Status;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -28,13 +29,15 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
   @Mock TaskRepository taskRepository;
-
+  @Mock
+  Helper helper;
   @InjectMocks TaskService taskService;
 
-  private final List<Task> tasks = new ArrayList<>();
+  private List<Task> tasks;
 
   @BeforeEach
   void setUp() {
+    tasks = new ArrayList<>();
     Profile profile = new Profile();
     profile.setId(1L);
     profile.setUsername("JohnDoe");
@@ -61,7 +64,7 @@ class TaskServiceTest {
   @Test
   void testFindByIdSuccess() {
     given(taskRepository.findById(1L)).willReturn(Optional.of(tasks.getFirst()));
-
+    given(helper.isAdmin()).willReturn(true);
     Task task = taskService.findbyId(1L);
     assertEquals(task.getId(), tasks.getFirst().getId());
   }
@@ -105,21 +108,20 @@ class TaskServiceTest {
   void testUpdateTask() {
     var oldItem = tasks.getFirst();
     given(taskRepository.findById(1L)).willReturn(Optional.of(oldItem));
-    var profile = new Task();
-    profile.setId(oldItem.getId());
-    profile.setDescription(oldItem.getDescription());
-    profile.setTitle(oldItem.getTitle());
-    profile.setOwner(oldItem.getOwner());
-    profile.setTags(oldItem.getTags());
-    profile.setDueDate(oldItem.getDueDate());
-    profile.setStatus(Status.PENDING);
-
-    given(taskRepository.save(oldItem)).willReturn(profile);
+    var task = new Task();
+    task.setId(oldItem.getId());
+    task.setDescription(oldItem.getDescription());
+    task.setTitle(oldItem.getTitle());
+    task.setOwner(oldItem.getOwner());
+    task.setDueDate(oldItem.getDueDate());
+    task.setStatus(Status.PENDING);
+    oldItem.getTags().forEach(task::addTagToTask);
+    given(taskRepository.save(oldItem)).willReturn(task);
     var dto = new TaskPartialRequestDTO(null, null, Status.PENDING, null, null);
     var result = this.taskService.patchTask(dto, 1L);
 
-    assertEquals(result.getId(), profile.getId());
-    assertEquals(result.getStatus(), profile.getStatus());
+    assertEquals(result.getId(), task.getId());
+    assertEquals(result.getStatus(), task.getStatus());
   }
 
   @Test
