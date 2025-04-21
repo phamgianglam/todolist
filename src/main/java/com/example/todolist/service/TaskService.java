@@ -49,8 +49,8 @@ public class TaskService {
       return task;
     } else {
       String username = helper.getCurrentUserName();
-        assert username != null;
-        if (username.equals(task.getOwner().getUsername())) return task;
+      assert username != null;
+      if (username.equals(task.getOwner().getUsername())) return task;
       throw new Exceptions.ObjectNotFoundException("task");
     }
   }

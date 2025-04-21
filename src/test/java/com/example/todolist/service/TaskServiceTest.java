@@ -29,8 +29,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 @ExtendWith(MockitoExtension.class)
 class TaskServiceTest {
   @Mock TaskRepository taskRepository;
-  @Mock
-  Helper helper;
+  @Mock Helper helper;
   @InjectMocks TaskService taskService;
 
   private List<Task> tasks;
