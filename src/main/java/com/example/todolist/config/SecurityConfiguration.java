@@ -26,9 +26,6 @@ public class SecurityConfiguration { // Removed extends WebSecurityConfiguration
     if (jwtEnabled) {
       http.csrf(AbstractHttpConfigurer::disable)
           .cors(AbstractHttpConfigurer::disable)
-          // .exceptionHandling(exceptionHandling ->
-          // exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
-          // )
           .sessionManagement(
               session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(
