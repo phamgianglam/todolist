@@ -13,3 +13,7 @@ spring:
 jwt:
   enabled: true
   secret: ${JWT_SECRET}
+
+cors:
+  allowed:
+    origins: ${CORS_ALLOWED_ORIGINS}

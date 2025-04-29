@@ -8,6 +8,9 @@ spring:
       max-file-size: 8MB
       max-request-size: 8MB
 
+cors:
+  allowed:
+    origins: http://localhost:8080, http://localhost:3000
 
 springdoc:
   api-docs:

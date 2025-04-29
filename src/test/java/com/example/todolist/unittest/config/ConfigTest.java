@@ -1,7 +1,9 @@
-package com.example.todolist.config;
+package com.example.todolist.unittest.config;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.example.todolist.config.SpingDocConfiguration;
+import com.example.todolist.config.StaticFileConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

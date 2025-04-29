@@ -1,4 +1,4 @@
-package com.example.todolist.service;
+package com.example.todolist.unittest.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,6 +11,7 @@ import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
 import com.example.todolist.repository.ProfileRepository;
 import com.example.todolist.repository.ProfileSpecification;
+import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.Exceptions.ObjectNotFoundException;
 import com.example.todolist.util.Helper;
 import com.example.todolist.util.Status;

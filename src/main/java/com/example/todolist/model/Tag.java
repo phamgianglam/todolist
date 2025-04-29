@@ -15,7 +15,8 @@ import lombok.*;
 @NoArgsConstructor
 public class Tag implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_seq")
+  @SequenceGenerator(name = "tag_seq", sequenceName = "tag_sequence", allocationSize = 1)
   Long id;
 
   private String name;

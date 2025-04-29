@@ -1,4 +1,4 @@
-package com.example.todolist.rest;
+package com.example.todolist.unittest.rest;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

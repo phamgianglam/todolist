@@ -1,4 +1,4 @@
-package com.example.todolist.service;
+package com.example.todolist.unittest.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,6 +10,7 @@ import com.example.todolist.dto.task.TaskPartialRequestDTO;
 import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
 import com.example.todolist.repository.TaskRepository;
+import com.example.todolist.service.TaskService;
 import com.example.todolist.util.Exceptions;
 import com.example.todolist.util.Helper;
 import com.example.todolist.util.Status;
@@ -71,6 +72,19 @@ class TaskServiceTest {
   @Test
   void testFindByIdNotFound() {
     given(taskRepository.findById(1L)).willReturn(Optional.empty());
+
+    assertThrows(
+        Exceptions.ObjectNotFoundException.class,
+        () -> {
+          taskService.findbyId(1L);
+        });
+  }
+
+  @Test
+  void testFindByIdNotFoundNonAdmin() {
+    given(taskRepository.findById(1L)).willReturn(Optional.of(tasks.getFirst()));
+    given(helper.isAdmin()).willReturn(false);
+    given(helper.getCurrentUserName()).willReturn("JaneDoe");
 
     assertThrows(
         Exceptions.ObjectNotFoundException.class,
