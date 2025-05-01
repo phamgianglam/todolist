@@ -2,23 +2,17 @@ package com.example.todolist.containerTest;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.time.Duration;
 import liquibase.integration.spring.SpringLiquibase;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
-@Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class IntegrationTestSetup {
 
   private static final Logger logger = LoggerFactory.getLogger(IntegrationTestSetup.class);
@@ -69,25 +63,6 @@ public class IntegrationTestSetup {
         }
         Thread.sleep(500); // wait and retry
       }
-    }
-  }
-
-  @AfterAll
-  static void clearDatabase() throws Exception {
-    logger.info("Clearing database {}", DB_NAME);
-    try (Connection conn =
-            DriverManager.getConnection(
-                postgres.getJdbcUrl(), postgres.getUsername(), postgres.getPassword());
-        Statement stmt = conn.createStatement()) {
-
-      stmt.execute(
-          "DO $$ DECLARE "
-              + "r RECORD; "
-              + "BEGIN "
-              + "FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP "
-              + "EXECUTE 'TRUNCATE TABLE ' || quote_ident(r.tablename) || ' CASCADE'; "
-              + "END LOOP; "
-              + "END $$;");
     }
   }
 
