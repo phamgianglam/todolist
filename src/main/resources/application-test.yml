@@ -3,6 +3,7 @@ spring:
     url: ${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    name: ${DB_NAME}
   jpa:
     hibernate:
       ddl-auto: none
@@ -13,3 +14,8 @@ spring:
 
 jwt:
   enabled: false
+
+#cors:
+#  allowed:
+#    origins:
+#      - "*"

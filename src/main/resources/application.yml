@@ -5,9 +5,12 @@ spring:
     active: dev  # Default profile
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 8MB
+      max-request-size: 8MB
 
+cors:
+  allowed:
+    origins: http://localhost:8080, http://localhost:3000
 
 springdoc:
   api-docs:

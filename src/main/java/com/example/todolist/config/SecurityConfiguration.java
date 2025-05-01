@@ -25,10 +25,6 @@ public class SecurityConfiguration { // Removed extends WebSecurityConfiguration
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     if (jwtEnabled) {
       http.csrf(AbstractHttpConfigurer::disable)
-          .cors(AbstractHttpConfigurer::disable)
-          // .exceptionHandling(exceptionHandling ->
-          // exceptionHandling.authenticationEntryPoint(unauthorizedHandler)
-          // )
           .sessionManagement(
               session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
           .authorizeHttpRequests(
