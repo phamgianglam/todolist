@@ -1,7 +1,8 @@
 package com.example.todolist.repository;
 
 import com.example.todolist.model.Profile;
-import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +14,5 @@ public interface ProfileRepository
     extends JpaRepository<Profile, Long>, JpaSpecificationExecutor<Profile> {
   Page<Profile> findByUsername(String username, Pageable pageable);
 
-  List<Profile> findByUsername(String username);
+  Optional<Profile> findByUsername(String username);
 }

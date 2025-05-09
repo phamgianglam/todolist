@@ -2,8 +2,12 @@ package com.example.todolist.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import lombok.*;
 
 @Entity
@@ -31,6 +35,29 @@ public class Profile implements Serializable {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  @Column(nullable = false)
+  private boolean enabled;
+
+  @Column(nullable = false)
+  private boolean accountNonBlocked;
+
+  @Column(nullable = false)
+  private boolean passwordNonExpired;
+
+  @Column(nullable = false)
+  private int daysToExpirePassword;
+
+  @Column(nullable = false)
+  private ZonedDateTime lastPasswordResetDate;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+          name = "profile_permissions",
+          joinColumns = @JoinColumn(name = "profile_id"),
+          inverseJoinColumns = @JoinColumn(name = "permission_id")
+  )
+  private Set<Permission> permissions = new HashSet<>();
 
   @OneToMany(
       cascade = {CascadeType.PERSIST, CascadeType.MERGE},

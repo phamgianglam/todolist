@@ -1,4 +1,4 @@
-package com.example.todolist.filter;
+package com.example.todolist.security.filter;
 
 import com.example.todolist.model.Profile;
 import com.example.todolist.service.ProfileService;

@@ -1,4 +1,4 @@
-package com.example.todolist.config;
+package com.example.todolist.security.config;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;

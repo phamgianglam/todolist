@@ -1,4 +1,4 @@
-package com.example.todolist.rest;
+package com.example.todolist.security;
 
 import com.example.todolist.converter.auth.AuthDtoToProfileConverter;
 import com.example.todolist.converter.profile.ProfileRequestDTOToProfileConverter;
