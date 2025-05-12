@@ -41,8 +41,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class ProfileServiceTest {
 
   @Mock ProfileRepository profileRepository;
-  @Mock
-  PermissionRepository permissionRepository;
+  @Mock PermissionRepository permissionRepository;
   @Mock PasswordEncoder passwordEncoder;
   @Mock Helper helper;
   @InjectMocks ProfileService profileService;
@@ -130,7 +129,7 @@ class ProfileServiceTest {
         .willThrow(new DataIntegrityViolationException("Unique constraint violation"));
     given(passwordEncoder.encode(any(String.class))).willReturn("encodedPassword");
     given(permissionRepository.findByName(any(String.class)))
-            .willReturn(Optional.of(new Permission("PROFILE_READ_OWN")));
+        .willReturn(Optional.of(new Permission("PROFILE_READ_OWN")));
     assertThrows(
         DataIntegrityViolationException.class, () -> profileService.createProfile(profile));
   }
