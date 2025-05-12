@@ -73,7 +73,8 @@ public class ProfileService {
     profile.setPassword(passwordEncoder.encode(profile.getPassword()));
 
     Stream.of("PROFILE_READ_OWN", "PROFILE_WRITE_OWN")
-        .map(permission -> permissionRepository.findByName(permission).orElseThrow()).forEach(profile::addPermission);
+        .map(permission -> permissionRepository.findByName(permission).orElseThrow())
+        .forEach(profile::addPermission);
 
     return this.profileRepository.save(profile);
   }
@@ -91,7 +92,6 @@ public class ProfileService {
   public void deleteProfileById(long profileId) {
     this.profileRepository.deleteById(profileId);
   }
-
 
   public Profile uploadAvatarImage(MultipartFile file, Long id) throws IOException {
 
