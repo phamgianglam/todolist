@@ -4,9 +4,11 @@ import com.example.todolist.model.Permission;
 import com.example.todolist.repository.PermissionRepository;
 import java.util.List;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile({"prod", "dev"})
 public class PermissionSeeder implements CommandLineRunner {
   private final PermissionRepository permissionRepository;
 
