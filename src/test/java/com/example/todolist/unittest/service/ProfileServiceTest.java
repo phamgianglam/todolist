@@ -135,7 +135,6 @@ class ProfileServiceTest {
     given(helper.isAdmin()).willReturn(Boolean.TRUE);
     var profile = new Profile();
     profile.setId(oldItem.getId());
-    profile.setRole(oldItem.getRole());
     profile.setUsername(oldItem.getUsername());
     profile.setPassword(oldItem.getPassword());
     var newEmail = "stuff@gmail.com";
