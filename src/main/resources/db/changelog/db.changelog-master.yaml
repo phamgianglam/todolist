@@ -47,3 +47,13 @@ databaseChangeLog:
             relativeToChangelogFile: true
         - tagDatabase:
             tag: add-profile-picture
+
+  - changeSet:
+      id: 5
+      author: lampham
+      changes:
+        - sqlFile:
+            path: changes/005-alter-profile-permission.sql
+            relativeToChangelogFile: true
+        - tagDatabase:
+            tag: add-permissions-table

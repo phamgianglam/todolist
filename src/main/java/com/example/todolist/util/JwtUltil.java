@@ -1,6 +1,5 @@
 package com.example.todolist.util;
 
-import com.example.todolist.model.Profile;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -9,6 +8,7 @@ import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,14 +22,14 @@ public class JwtUltil {
     this.secretKey = secretKey;
   }
 
-  public String createToken(Profile profile) {
+  public String createToken(UserDetails userDetails) {
 
     long currentTimeMillis = Instant.now().toEpochMilli();
 
     long validityInMilis = 3600000;
     long expiryTimeMillis = currentTimeMillis + validityInMilis;
 
-    String payload = profile.getUsername() + "|" + profile.getRole() + "|" + expiryTimeMillis;
+    String payload = userDetails.getUsername() + "|" + expiryTimeMillis;
 
     String signature = generateHmacSha256(payload, secretKey);
 
@@ -40,26 +40,20 @@ public class JwtUltil {
   public String getUsername(String token) throws IllegalArgumentException {
     String[] parts = decodeToken(token);
     validateToken(parts);
-    return parts[0]; // Username is the first part
-  }
-
-  public String getRole(String token) throws IllegalArgumentException {
-    String[] parts = decodeToken(token);
-    validateToken(parts);
-    return parts[1];
+    return parts[0];
   }
 
   public boolean isExpired(String token) throws IllegalArgumentException {
     String[] parts = decodeToken(token);
     validateToken(parts);
-    long expiryTimeMillis = Long.parseLong(parts[2]); // Expiry time is the second part
+    long expiryTimeMillis = Long.parseLong(parts[1]);
     return expiryTimeMillis < Instant.now().toEpochMilli();
   }
 
   private String[] decodeToken(String token) {
     try {
       String decoded = new String(Base64.getUrlDecoder().decode(token), StandardCharsets.UTF_8);
-      return decoded.split("\\|"); // Split by separator
+      return decoded.split("\\|");
     } catch (Exception e) {
       throw new IllegalArgumentException("Invalid token format");
     }

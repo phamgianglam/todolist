@@ -1,6 +1,6 @@
-package com.example.todolist.config;
+package com.example.todolist.security.config;
 
-import com.example.todolist.filter.JwtRequestFilter;
+import com.example.todolist.security.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.example.todolist.config;
+package com.example.todolist.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

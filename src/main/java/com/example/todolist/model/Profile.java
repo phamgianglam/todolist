@@ -2,8 +2,11 @@ package com.example.todolist.model;
 
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.*;
 
 @Entity
@@ -29,8 +32,27 @@ public class Profile implements Serializable {
   @Column(nullable = true)
   private String email;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
+  @Column(nullable = false)
+  private boolean enabled;
+
+  @Column(nullable = false)
+  private boolean accountNonBlocked;
+
+  @Column(nullable = false)
+  private boolean passwordNonExpired;
+
+  @Column(nullable = false)
+  private int daysToExpirePassword;
+
+  @Column(nullable = false)
+  private ZonedDateTime lastPasswordResetDate;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "profile_permissions",
+      joinColumns = @JoinColumn(name = "profile_id"),
+      inverseJoinColumns = @JoinColumn(name = "permission_id"))
+  private final Set<Permission> permissions = new HashSet<>();
 
   @OneToMany(
       cascade = {CascadeType.PERSIST, CascadeType.MERGE},
@@ -45,19 +67,13 @@ public class Profile implements Serializable {
     this.tasks.add(task);
   }
 
-  public Profile(String username, String password, String email) {
-    this(username, password, email, Role.USER);
+  public void addPermission(Permission permission) {
+    this.permissions.add(permission);
   }
 
-  public Profile(String username, String password, String email, Role role) {
+  public Profile(String username, String password, String email) {
     this.username = username;
     this.password = password;
     this.email = email;
-    this.role = role;
   }
-}
-
-enum Role {
-  ADMIN,
-  USER
 }
