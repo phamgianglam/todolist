@@ -52,7 +52,7 @@ public class Profile implements Serializable {
       name = "profile_permissions",
       joinColumns = @JoinColumn(name = "profile_id"),
       inverseJoinColumns = @JoinColumn(name = "permission_id"))
-  private Set<Permission> permissions = new HashSet<>();
+  private final Set<Permission> permissions = new HashSet<>();
 
   @OneToMany(
       cascade = {CascadeType.PERSIST, CascadeType.MERGE},
