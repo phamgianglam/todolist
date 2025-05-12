@@ -67,6 +67,10 @@ public class Profile implements Serializable {
     this.tasks.add(task);
   }
 
+  public void addPermission(Permission permission) {
+    this.permissions.add(permission);
+  }
+
   public Profile(String username, String password, String email) {
     this.username = username;
     this.password = password;

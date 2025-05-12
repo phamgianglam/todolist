@@ -1,7 +1,6 @@
 package com.example.todolist.service;
 
 import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
-import com.example.todolist.model.Permission;
 import com.example.todolist.model.Profile;
 import com.example.todolist.repository.PermissionRepository;
 import com.example.todolist.repository.ProfileRepository;
@@ -13,9 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -33,20 +30,20 @@ public class ProfileService {
       Helper helper,
       PasswordEncoder passwordEncoder,
       PermissionRepository permissionRepository,
-      ProfileRepository profileRepository) {
+      ProfileRepository profileRepository,
+      @Value("${app.upload.dir}") String uploadDir) {
     this.helper = helper;
     this.passwordEncoder = passwordEncoder;
     this.permissionRepository = permissionRepository;
     this.profileRepository = profileRepository;
+    this.uploadDir = uploadDir;
   }
 
   private final Helper helper;
   private final PasswordEncoder passwordEncoder;
   private final PermissionRepository permissionRepository;
   private final ProfileRepository profileRepository;
-
-  @Value("${app.upload.dir}")
-  private String uploadDir;
+  private final String uploadDir;
 
   public Profile findById(Long userId) {
     Profile profile =
@@ -74,12 +71,10 @@ public class ProfileService {
 
   public Profile createProfile(Profile profile) {
     profile.setPassword(passwordEncoder.encode(profile.getPassword()));
-    Set<Permission> permissionsSet =
-        Stream.of("PROFILE_READ_OWN", "PROFILE_WRITE_OWN")
-            .map(permission -> permissionRepository.findByName(permission).orElseThrow())
-            .collect(Collectors.toSet());
 
-    profile.setPermissions(permissionsSet);
+    Stream.of("PROFILE_READ_OWN", "PROFILE_WRITE_OWN")
+        .map(permission -> permissionRepository.findByName(permission).orElseThrow()).forEach(profile::addPermission);
+
     return this.profileRepository.save(profile);
   }
 
@@ -97,11 +92,6 @@ public class ProfileService {
     this.profileRepository.deleteById(profileId);
   }
 
-  public Profile getByUsername(String username) {
-    return this.profileRepository
-        .findByUsername(username)
-        .orElseThrow(() -> new Exceptions.ObjectNotFoundException("profile"));
-  }
 
   public Profile uploadAvatarImage(MultipartFile file, Long id) throws IOException {
 
