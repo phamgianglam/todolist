@@ -7,8 +7,10 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import com.example.todolist.dto.profile.ProfilePartialRequestDTO;
+import com.example.todolist.model.Permission;
 import com.example.todolist.model.Profile;
 import com.example.todolist.model.Task;
+import com.example.todolist.repository.PermissionRepository;
 import com.example.todolist.repository.ProfileRepository;
 import com.example.todolist.repository.ProfileSpecification;
 import com.example.todolist.service.ProfileService;
@@ -39,7 +41,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class ProfileServiceTest {
 
   @Mock ProfileRepository profileRepository;
-
+  @Mock
+  PermissionRepository permissionRepository;
   @Mock PasswordEncoder passwordEncoder;
   @Mock Helper helper;
   @InjectMocks ProfileService profileService;
@@ -114,6 +117,8 @@ class ProfileServiceTest {
     saveProfile.setId(1L);
     given(profileRepository.save(profile)).willReturn(saveProfile);
     given(passwordEncoder.encode(any(String.class))).willReturn("encodedPassword");
+    given(permissionRepository.findByName(any(String.class)))
+        .willReturn(Optional.of(new Permission("PROFILE_READ_OWN")));
     var result = this.profileService.createProfile(profile);
     assertEquals(saveProfile.getId(), result.getId());
   }
@@ -124,6 +129,8 @@ class ProfileServiceTest {
     given(profileRepository.save(profile))
         .willThrow(new DataIntegrityViolationException("Unique constraint violation"));
     given(passwordEncoder.encode(any(String.class))).willReturn("encodedPassword");
+    given(permissionRepository.findByName(any(String.class)))
+            .willReturn(Optional.of(new Permission("PROFILE_READ_OWN")));
     assertThrows(
         DataIntegrityViolationException.class, () -> profileService.createProfile(profile));
   }
