@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import lombok.*;
 
 @Entity
@@ -33,9 +32,6 @@ public class Profile implements Serializable {
   @Column(nullable = true)
   private String email;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
-
   @Column(nullable = false)
   private boolean enabled;
 
@@ -53,10 +49,9 @@ public class Profile implements Serializable {
 
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-          name = "profile_permissions",
-          joinColumns = @JoinColumn(name = "profile_id"),
-          inverseJoinColumns = @JoinColumn(name = "permission_id")
-  )
+      name = "profile_permissions",
+      joinColumns = @JoinColumn(name = "profile_id"),
+      inverseJoinColumns = @JoinColumn(name = "permission_id"))
   private Set<Permission> permissions = new HashSet<>();
 
   @OneToMany(
@@ -73,18 +68,8 @@ public class Profile implements Serializable {
   }
 
   public Profile(String username, String password, String email) {
-    this(username, password, email, Role.USER);
-  }
-
-  public Profile(String username, String password, String email, Role role) {
     this.username = username;
     this.password = password;
     this.email = email;
-    this.role = role;
   }
-}
-
-enum Role {
-  ADMIN,
-  USER
 }

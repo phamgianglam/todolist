@@ -8,7 +8,6 @@ import com.example.todolist.model.Profile;
 import com.example.todolist.service.ProfileService;
 import com.example.todolist.util.JwtUltil;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,31 +21,36 @@ public class AuthController {
   private final AuthDtoToProfileConverter authDtoToProfileConverter;
   private final ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter;
   private final JwtUltil jwtUltil;
+  private final CustomUserDetailService customUserDetailService;
 
   public AuthController(
-      ProfileService profileService,
       AuthDtoToProfileConverter authDtoToProfileConverter,
+      PasswordEncoder passwordEncoder,
+      ProfileService profileService,
       ProfileRequestDTOToProfileConverter profileRequestDTOToProfileConverter,
       JwtUltil jwtUltil,
-      PasswordEncoder passwordEncoder) {
-    this.profileService = profileService;
+      CustomUserDetailService customUserDetailService) {
     this.authDtoToProfileConverter = authDtoToProfileConverter;
+    this.passwordEncoder = passwordEncoder;
+    this.profileService = profileService;
     this.profileRequestDTOToProfileConverter = profileRequestDTOToProfileConverter;
     this.jwtUltil = jwtUltil;
-    this.passwordEncoder = passwordEncoder;
+    this.customUserDetailService = customUserDetailService;
   }
 
   @PostMapping("/api/v1/auth/")
   public ResponseEntity<String> auth(@Valid @RequestBody AuthDTO authDTO) {
     Profile requestAuthprofile = authDtoToProfileConverter.convert(authDTO);
     assert requestAuthprofile != null;
-    List<Profile> profiles = profileService.getByUsername(requestAuthprofile.getUsername());
-    if (profiles.isEmpty()) return ResponseEntity.notFound().build();
+    CustomUserDetail customUserDetail =
+        customUserDetailService.loadUserByUsername(authDTO.username());
+    if (!customUserDetail.isAccountNonLocked())
+      return ResponseEntity.status(400).body("Account is locked");
 
-    Profile profile = profiles.getFirst();
-    if (!passwordEncoder.matches(authDTO.password(), profile.getPassword()))
-      return ResponseEntity.notFound().build();
-    String token = this.jwtUltil.createToken(profile);
+    if (!passwordEncoder.matches(authDTO.password(), customUserDetail.getPassword()))
+      return ResponseEntity.status(400).body("Password is incorrect");
+
+    String token = this.jwtUltil.createToken(customUserDetail);
 
     return ResponseEntity.ok(token);
   }
